@@ -8,12 +8,11 @@
 
 import Foundation
 
-struct BinaryMap<K: Comparable, V>: CustomStringConvertible {
+class BinaryMap<K: Comparable, V>: AbstractMap<Any, Any> {
     var keys = [K]()
     var values = [V]()
-    var count = 0
     
-    mutating func set(_ k: K, v: V) {
+    func set(_ k: K, v: V) {
         if let index = binarySearch(elements: keys, target: k) { //binary search
             values[index] = v   //found key and reset value
         } else {
@@ -26,6 +25,22 @@ struct BinaryMap<K: Comparable, V>: CustomStringConvertible {
             return values[index]
         }
         return nil
+    }
+    
+    override var count: Int {return keys.count}
+    
+    subscript(index: K) -> V? {
+        get {
+            return get(index)
+        } set(newValue) {
+            set(index, v: newValue!)
+        }
+    }
+    
+    override var description: String {
+        var desc = "[\n"
+        for i in 0..<keys.count { desc += "\(keys[i]): \(values[i])\n" }
+        return desc + "]"
     }
     
     func binarySearch<K: Comparable>(elements: [K], target: K) -> Int? {
@@ -45,28 +60,13 @@ struct BinaryMap<K: Comparable, V>: CustomStringConvertible {
         return nil
     }
     
-    mutating func linearInsertion(_ k: K, _ v: V) {
+    func linearInsertion(_ k: K, _ v: V) {
         for i in 0..<keys.count where k < keys[i] {
             keys.insert(k, at: i)
             values.insert(v, at: i)
-            count += 1
             return
         }
         keys.append(k)  //if empty or full map (special case)
         values.append(v)
-    }
-    
-    var description: String {
-        var desc = "[\n"
-        for i in 0..<keys.count { desc += "\(keys[i]): \(values[i])\n" }
-        return desc + "]"
-    }
-    
-    subscript(index: K) -> V? {
-        get {
-            return get(index)
-        } set(newValue) {
-            set(index, v: newValue!)
-        }
     }
 }

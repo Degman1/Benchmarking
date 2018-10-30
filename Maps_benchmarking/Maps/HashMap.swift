@@ -8,12 +8,11 @@
 
 import Foundation
 
-struct HashMap<K: Hashable, V>: CustomStringConvertible {
+class HashMap<K: Hashable, V>: AbstractMap<Any, Any> {
     var keys: [K?]
     var values: [V?]
     var linearMap = LinearMap<K, V>()
     let initialArraySize: Int
-    var count = 0
     var numberCollisions = 0
     
     init(initialArraySize: Int = 100) {
@@ -22,24 +21,18 @@ struct HashMap<K: Hashable, V>: CustomStringConvertible {
         values = Array(repeating: nil, count: initialArraySize)
     }
     
-    func getIndex(_ k: K) -> Int {
-        return abs(k.hashValue % initialArraySize)
-    }
-    
     func getNumberCollisions() -> Int { return numberCollisions }
     
-    mutating func set(_ k: K, _ v: V) {
+    func set(_ k: K, v: V) {
         let index = getIndex(k)
         if keys[index] == k { //if already present, update value
             values[index] = v
         } else if keys[index] == nil { //if not present + space empty, add entry
             keys[index] = k
             values[index] = v
-            count += 1
         } else { //if space occupied by other, place new entry in linear map
             numberCollisions += 1
             linearMap[k] = v
-            count += 1
         }
     }
     
@@ -54,7 +47,17 @@ struct HashMap<K: Hashable, V>: CustomStringConvertible {
         }
     }
     
-    var description: String {
+    override var count: Int {return keys.filter({$0 != nil}).count + linearMap.count}
+    
+    subscript(index: K) -> V? {
+        get {
+            return get(index)
+        } set(newValue) {
+            set(index, v: newValue!)
+        }
+    }
+    
+    override var description: String {
         var desc = "[\n"
         for i in 0..<keys.count {
             if keys[i] != nil { desc += "\(keys[i]!): \(values[i]!)\n" }
@@ -62,11 +65,7 @@ struct HashMap<K: Hashable, V>: CustomStringConvertible {
         return desc + "]"
     }
     
-    subscript(index: K) -> V? {
-        get {
-            return get(index)
-        } set(newValue) {
-            set(index, newValue!)
-        }
+    func getIndex(_ k: K) -> Int {
+        return abs(k.hashValue % initialArraySize)
     }
 }

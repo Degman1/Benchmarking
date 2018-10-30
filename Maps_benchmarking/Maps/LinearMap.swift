@@ -8,20 +8,18 @@
 
 import Foundation
 
-struct LinearMap<K: Hashable, V>: CustomStringConvertible {
+class LinearMap<K: Hashable, V>: AbstractMap<Any, Any> {
     var keys = [K]()
     var values = [V]()
-    var count: Int = 0
     
     fileprivate func findKeyIndex(_ k: K) -> Int? {
         return keys.index(of: k)
     }
     
-    mutating func set(_ k: K, _ v: V) {
+    func set(_ k: K, v: V) {
         if let i = findKeyIndex(k) { values[i] = v; return }
         keys.append(k)
         values.append(v)
-        count += 1
     }
     
     func get(_ k: K) -> V? {
@@ -29,7 +27,9 @@ struct LinearMap<K: Hashable, V>: CustomStringConvertible {
         return nil
     }
     
-    var description: String {
+    override var count: Int  {return keys.count}
+    
+    override var description: String {
         var desc = "[\n"
         for i in 0..<keys.count { desc += "\(keys[i]): \(values[i])\n" }
         return desc + "]"
@@ -39,7 +39,7 @@ struct LinearMap<K: Hashable, V>: CustomStringConvertible {
         get {
             return get(index)
         } set(newValue) {
-            set(index, newValue!)
+            set(index, v: newValue!)
         }
     }
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FakeMap<K, V>: CustomStringConvertible {
+class AbstractMap<K, V>: CustomStringConvertible {
     func getNumberCollitions() -> Int {return 0}
     func set(_ k: K, v: V) {return}
     func remove(_ k: K) {return}

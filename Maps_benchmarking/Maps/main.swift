@@ -37,9 +37,9 @@ public class MapTest {
     func testLinearMap()->Bool{
         var value = ""
         var key = ""
-        var map = LinearMap<String, String>()
+        let map = LinearMap<String, String>()
         for i in 0..<NUMBER_PUTS {
-            map.set(stringList[i], stringList[i]);
+            map.set(stringList[i], v: stringList[i]);
         }
         
         for index in 0..<NUMBER_PUTS {
@@ -54,7 +54,7 @@ public class MapTest {
     func testBinaryMap()->Bool{
         var value = ""
         var key = ""
-        var map = BinaryMap<String, String>()
+        let map = BinaryMap<String, String>()
         for i in 0..<NUMBER_PUTS{
             map.set(stringList[i], v: stringList[i]);
         }
@@ -75,9 +75,9 @@ public class MapTest {
     func testHashMap()->Bool{
         var value = ""
         var key = ""
-        var map = HashMap<String, String>(initialArraySize: 2000)
+        let map = HashMap<String, String>(initialArraySize: 2000)
         for i in 0..<NUMBER_PUTS {
-            map.set(stringList[i], stringList[i]);
+            map.set(stringList[i], v: stringList[i]);
         }
         for index in 0..<NUMBER_PUTS {
             key = stringList[index]
@@ -101,76 +101,3 @@ public class MapTest {
 
 let mt = MapTest()
 mt.doTest()
-
-
-
-/*var lm = LinearMap<String, Int>()
-lm["fred"] = 72
-lm["phil"] = 47
-lm["kate"] = 91
-lm["ann"] = 68
-lm["frodo"] = 92
-lm["odorf"] = 100
-print(lm)
-lm["frodo"] = 400
-print("frodo is...\(lm["frodo"])")
-print("ann is...\(lm["ann"])")
-print("odorf is...\(lm["odorf"])")
-print("dog is...\(lm["dog"])")
-print(lm.count)
-
-print()
-var bm = BinaryMap<String, Int>()
-bm["fred"] = 72
-bm["phil"] = 47
-bm["kate"] = 91
-bm["ann"] = 68
-bm["frodo"] = 92
-bm["odorf"] = 100
-print(bm)
-bm["frodo"] = 5000
-print("frodo is...\(bm["frodo"])")
-print("ann is...\(bm["ann"])")
-print("odorf is...\(bm["odorf"])")
-print("dog is...\(bm["dog"])")
-print(bm.count)
-
-print()
-print(abs("a".hashValue % 5))
-print(abs("b".hashValue % 5))
-print(abs("c".hashValue % 5))
-print(abs("d".hashValue % 5))
-print(abs("e".hashValue % 5))
-print(abs("f".hashValue % 5))
-var hm = HashMap<String, Int>(initialArraySize: 5)
-hm["a"] = 1
-hm["b"] = 2
-hm["c"] = 3
-hm["d"] = 4
-hm["e"] = 5
-hm["f"] = 6
-print(hm)
-print(hm.linearMap)
-hm["a"] = 200
-hm["d"] = 300
-hm["e"] = 400
-hm["f"] = 500
-print("a is...\(hm["a"])")
-print("b is...\(hm["b"])")
-print("c is...\(hm["c"])")
-print("d is...\(hm["d"])")
-print("e is...\(hm["e"])")
-print("f is...\(hm["f"])")
-print("g is...\(hm["g"])")
-print(hm.count)
-print(hm.getNumberCollisions())*/
-
-/*
- Expected Output:
- 
- [fred: 72, phil: 47, kate: 91, ann: 68, frodo: 92]
- frodo is...Optional(92)
- ann is...Optional(68)
- [fred: 72, phil: 47, kate: 91, ann: 68, frodo: 92]
- 5
- */
