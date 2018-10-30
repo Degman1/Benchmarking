@@ -11,6 +11,7 @@ import Foundation
 struct BinaryMap<K: Comparable, V>: CustomStringConvertible {
     var keys = [K]()
     var values = [V]()
+    var count = 0
     
     mutating func set(_ k: K, v: V) {
         if let index = binarySearch(elements: keys, target: k) { //binary search
@@ -48,14 +49,11 @@ struct BinaryMap<K: Comparable, V>: CustomStringConvertible {
         for i in 0..<keys.count where k < keys[i] {
             keys.insert(k, at: i)
             values.insert(v, at: i)
+            count += 1
             return
         }
         keys.append(k)  //if empty or full map (special case)
         values.append(v)
-    }
-    
-    var count: Int {
-        return keys.count
     }
     
     var description: String {
