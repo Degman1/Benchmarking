@@ -13,3 +13,4 @@ Project Timeline (by number of classes after project was assigned):
 
 Links to external documents (go to shared folder for more):
 - Big-O Table: https://docs.google.com/document/d/1hEGq579TpZt017JH7B9MPYTHAXQoMduLJaNHRIX3dn8/edit
+- Write-Up: https://docs.google.com/document/d/1GCWBZ_kuzWfhziTjil3R6D8jHNBRoGPjkLRyuAeJsaw/edit#
