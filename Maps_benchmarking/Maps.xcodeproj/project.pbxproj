@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		632894AE218FEE89005631EE /* BenchmarkingProposal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632894AD218FEE89005631EE /* BenchmarkingProposal.swift */; };
 		6381972121610C8D004CEC6A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6381972021610C8D004CEC6A /* main.swift */; };
 		6381972821610C9C004CEC6A /* LinearMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6381972721610C9C004CEC6A /* LinearMap.swift */; };
 		639F7BAB2188DF960028D4B1 /* AbstractMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639F7BAA2188DF960028D4B1 /* AbstractMap.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		632894AD218FEE89005631EE /* BenchmarkingProposal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkingProposal.swift; sourceTree = "<group>"; };
 		6381971D21610C8D004CEC6A /* Maps */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Maps; sourceTree = BUILT_PRODUCTS_DIR; };
 		6381972021610C8D004CEC6A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		6381972721610C9C004CEC6A /* LinearMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearMap.swift; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 				6381972721610C9C004CEC6A /* LinearMap.swift */,
 				63DDF045216D7021007A0A5A /* BinaryMap.swift */,
 				63DDF047216D702A007A0A5A /* HashMap.swift */,
+				632894AD218FEE89005631EE /* BenchmarkingProposal.swift */,
 			);
 			path = Maps;
 			sourceTree = "<group>";
@@ -133,6 +136,7 @@
 			files = (
 				63DDF046216D7021007A0A5A /* BinaryMap.swift in Sources */,
 				639F7BAB2188DF960028D4B1 /* AbstractMap.swift in Sources */,
+				632894AE218FEE89005631EE /* BenchmarkingProposal.swift in Sources */,
 				6381972121610C8D004CEC6A /* main.swift in Sources */,
 				63DDF048216D702A007A0A5A /* HashMap.swift in Sources */,
 				6381972821610C9C004CEC6A /* LinearMap.swift in Sources */,
