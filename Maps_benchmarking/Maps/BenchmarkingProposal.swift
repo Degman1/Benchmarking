@@ -12,16 +12,16 @@ import Foundation
 //none of this is meant to be functional code, it is only supposed to illustrate the concept
 
 class Benchmarker {
-    var testResults_On: (Int, Double) = []; //stores results in format of n:time
-    var testResults_LinearGet: (Int, Double) = [];
-    var testReults_LinearSet: (Int, Double) = [];
-    var testResults_Ologn: (Int, Double) = [];
-    var testReults_BinaryGet: (Int, Double) = [];
+    var testResults_On: [(Int, Double)] = []; //stores results in format of n:time
+    var testResults_LinearGet: [(Int, Double)] = [];
+    var testReults_LinearSet: [(Int, Double)] = [];
+    var testResults_Ologn: [(Int, Double)] = [];
+    var testReults_BinaryGet: [(Int, Double)] = [];
     //etc
     
     func getTimeFor_On(n: Int) {
         //this performs a standard O(n) operation for a given n value and gives the time
-        var whateverList: Int = []
+        var whateverList: [Int] = []
         startTimer();
         for i in 0..<n {
             whateverList.append(1)
