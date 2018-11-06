@@ -41,6 +41,13 @@ class Benchmark {
         return s
     }
     
+    func makeStringList(size: Int) {
+        stringList = [String]()
+        for _ in 0..<size {
+            stringList.append(makeString(length: 10))
+        }
+    }
+    
     func getRandomInt(range: Int) -> Int {
         return Int(arc4random_uniform(UInt32(range)))
     }
