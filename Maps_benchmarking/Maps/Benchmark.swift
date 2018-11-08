@@ -156,7 +156,7 @@ class Benchmark {
             map.set(stringList[n], v: stringList[n])
         }
         endTimer()
-        benchmarkMessageMillis(operationName: "Binary Map Set (\(nOperations) operations)")
+        benchmarkMessageMillis(operationName: "Hash Map Set (\(nOperations) operations)")
         binaryMapSetResults[nOperations] = elapsedTimeTenthsSeconds()
         
         startTimer()
@@ -167,7 +167,7 @@ class Benchmark {
             if !(value == key) { print("bad hash map... uh oh"); return false }
         }
         endTimer()
-        benchmarkMessageMillis(operationName: "Binary Map Get (\(nOperations) operations)")
+        benchmarkMessageMillis(operationName: "Hash Map Get (\(nOperations) operations)")
         binaryMapGetResults[nOperations] = elapsedTimeTenthsSeconds()
         return true
     }
@@ -189,6 +189,7 @@ class Benchmark {
             let _ = linearTest(nOperations: nOperations)
             let _ = binaryTest(nOperations: nOperations)
             let _ = hashTest(nOperations: nOperations)
+            print()
         }
     }
     
@@ -205,14 +206,21 @@ class Benchmark {
         //include comparisons between map results and comparisons between generic Big-O results
         return ""
     }
+    
+    func statistics() {
+        print("\nBenchmark Test Results:")
+        print("\tLinear Set Test Results - \(linearMapSetResults)")
+        print("\tLinear Get Test Results - \(linearMapGetResults)")
+        print("\tBinary Set Test Results - \(binaryMapSetResults)")
+        print("\tBinary Get Test Results - \(binaryMapGetResults)")
+        print("\tHash Set Test Results - \(hashMapSetResults)")
+        print("\tHash Get Test Results - \(linearMapGetResults)")
+    }
 }
 
 
 func doBenchmark() {
     let b = Benchmark()
-    let _ = b.linearTest(nOperations: 20000)
-    print()
-    let _ = b.binaryTest(nOperations: 20000)
-    print()
-    let _ = b.hashTest(nOperations: 20000)
+    let _ = b.doTests()
+    
 }

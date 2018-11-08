@@ -10,7 +10,7 @@ import Foundation
 
 public class MapTest {
     var stringList = [String]()
-    let chars = Array("abcdefghijklmnopqrstuvwxyz".characters)
+    let chars = Array("abcdefghijklmnopqrstuvwxyz")
     
     let MAX_SIZE = 1000
     let NUMBER_PUTS = 1000
