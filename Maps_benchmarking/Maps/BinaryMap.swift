@@ -11,7 +11,7 @@ import Foundation
 class BinaryMap<K: Comparable, V>: AbstractMap<Any, Any> {
     var keys = [K]()
     var values = [V]()
-    
+        
     func set(_ k: K, v: V) {
         if let index = binarySearch(elements: keys, target: k) { //binary search
             values[index] = v   //found key and reset value
@@ -28,7 +28,7 @@ class BinaryMap<K: Comparable, V>: AbstractMap<Any, Any> {
     }
     
     override var count: Int {return keys.count}
-    
+        
     subscript(index: K) -> V? {
         get {
             return get(index)

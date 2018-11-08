@@ -11,7 +11,8 @@ import Foundation
 //a proposal for a possible benchmarking class.
 //none of this is meant to be functional code, it is only supposed to illustrate the concept
 
-class Benchmarker {
+/*commented out so it doesn't run errors and interfere with testing
+ class Benchmarker {
     var testResults_On: [Int: Double] = [:]; //stores results in format of n:time
     var testResults_LinearGet: [Int: Double] = [:];
     var testReults_LinearSet: [Int: Double] = [:];
@@ -52,4 +53,4 @@ class Benchmarker {
         //[.2, .201, .198, .189, .211], you know that linear get is almost exactly O(.2n), or O(n)
         //if it is [.2, .501, 9.198, 105.00189, 11913.3], linear get is probably not O(n) at all
     }
-}
+}*/

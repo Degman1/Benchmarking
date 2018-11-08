@@ -11,7 +11,7 @@ import Foundation
 class LinearMap<K: Hashable, V>: AbstractMap<Any, Any> {
     var keys = [K]()
     var values = [V]()
-    
+        
     fileprivate func findKeyIndex(_ k: K) -> Int? {
         return keys.index(of: k)
     }
@@ -28,7 +28,7 @@ class LinearMap<K: Hashable, V>: AbstractMap<Any, Any> {
     }
     
     override var count: Int  {return keys.count}
-    
+        
     override var description: String {
         var desc = "[\n"
         for i in 0..<keys.count { desc += "\(keys[i]): \(values[i])\n" }
