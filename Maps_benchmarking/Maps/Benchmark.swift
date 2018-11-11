@@ -10,23 +10,23 @@ import Foundation
 
 class Benchmark {
     //Map Test Results Storage:
-    var linearMapGetResults = [Int: Int]()   //[Number of operations: time taken (tenths of seconds)]
-    var linearMapSetResults = [Int: Int]()
-    var binaryMapGetResults = [Int: Int]()
-    var binaryMapSetResults = [Int: Int]()
-    var hashMapGetResults = [Int: Int]()
-    var hashMapSetResults = [Int: Int]()
+    var linearMapGetResults = [Int: Double]()   //[Number of operations: time taken (milliseconds)]
+    var linearMapSetResults = [Int: Double]()
+    var binaryMapGetResults = [Int: Double]()
+    var binaryMapSetResults = [Int: Double]()
+    var hashMapGetResults = [Int: Double]()
+    var hashMapSetResults = [Int: Double]()
     
     //Generic Test Results Storage: To be compared by magnitude to map test results of similar Big-O efficiencies
-    var OnResults = [Int: Int]()
-    var OlogNResults = [Int: Int]()
-    var OcResults = [Int: Int]()
+    var OnResults = [Int: Double]()
+    var OlogNResults = [Int: Double]()
+    var OcResults = [Int: Double]()
     
     let NUMBER_OPERATIONS = [10000, 20000, 30000, 40000, 50000]   //keep number contant through all operations to get comparable results
     
     //keep track of timer:
-    var startTaskms: Int64 = 0
-    var endTastms: Int64 = 0
+    var startTaskms: Double = 0	//I wanted to make this Float80 but vscode didn't highlight it as a valid type
+    var endTaskms: Double = 0	//double is 64 bit so it should still suffice
     
     var stringList = [String]()     //stores set of random strings to use when setting + getting values from maps
     let chars = Array("abcdefghijklmnopqrstuv")
@@ -52,8 +52,8 @@ class Benchmark {
         return Int(arc4random_uniform(UInt32(range)))
     }
     
-    func getCurrentMillis() -> Int64 {
-        return Int64(NSDate().timeIntervalSince1970 * 1000)
+    func getCurrentMillis() -> Double {
+        return Double(NSDate().timeIntervalSince1970 * 1000)
     }
     
     func startTimer() {
@@ -61,19 +61,19 @@ class Benchmark {
     }
     
     func endTimer() {
-        endTastms = getCurrentMillis()
+        endTaskms = getCurrentMillis()
     }
     
-    func elapsedTimems() -> Int {
-        return Int(endTastms - startTaskms)
+    func elapsedTimems() -> Double {
+        return Double(endTaskms - startTaskms)
     }
     
     func elapsedTimeSeconds() -> Int {
-        return elapsedTimems() / 1000
+        return Int(elapsedTimems() / 1000)
     }
     
     func elapsedTimeTenthsSeconds() -> Int {
-        return elapsedTimems() / 1000
+        return Int(elapsedTimems() / 100)
     }
     
     func benchmarkMessageTenths(operationName: String) {
@@ -99,7 +99,7 @@ class Benchmark {
         }
         endTimer()
         benchmarkMessageMillis(operationName: "Linear Map Set (\(nOperations) operations)")
-        linearMapSetResults[nOperations] = elapsedTimeTenthsSeconds()   //place all results in corresponding dictionaries
+        linearMapSetResults[nOperations] = elapsedTimems()   //place all results in corresponding dictionaries
         
         startTimer()
         for _ in 0..<nOperations {
@@ -110,7 +110,7 @@ class Benchmark {
         }
         endTimer()
         benchmarkMessageMillis(operationName: "Linear Map Get (\(nOperations) operations)")
-        linearMapGetResults[nOperations] = elapsedTimeTenthsSeconds()
+        linearMapGetResults[nOperations] = elapsedTimems()
         return true
     }
     
@@ -128,7 +128,7 @@ class Benchmark {
         }
         endTimer()
         benchmarkMessageMillis(operationName: "Binary Map Set (\(nOperations) operations)")
-        binaryMapSetResults[nOperations] = elapsedTimeTenthsSeconds()
+        binaryMapSetResults[nOperations] = elapsedTimems()
         
         startTimer()
         for _ in 0..<nOperations {
@@ -139,7 +139,7 @@ class Benchmark {
         }
         endTimer()
         benchmarkMessageMillis(operationName: "Binary Map Get (\(nOperations) operations)")
-        binaryMapGetResults[nOperations] = elapsedTimeTenthsSeconds()
+        binaryMapGetResults[nOperations] = elapsedTimems()
         return true
     }
     
@@ -157,7 +157,7 @@ class Benchmark {
         }
         endTimer()
         benchmarkMessageMillis(operationName: "Hash Map Set (\(nOperations) operations)")
-        binaryMapSetResults[nOperations] = elapsedTimeTenthsSeconds()
+        binaryMapSetResults[nOperations] = elapsedTimems()
         
         startTimer()
         for _ in 0..<nOperations {
@@ -168,19 +168,52 @@ class Benchmark {
         }
         endTimer()
         benchmarkMessageMillis(operationName: "Hash Map Get (\(nOperations) operations)")
-        binaryMapGetResults[nOperations] = elapsedTimeTenthsSeconds()
+        binaryMapGetResults[nOperations] = elapsedTimems()
         return true
     }
     
-    func doTest_On() -> Bool {          // O(n) -- compare to linear map
+    func doTest_On(nOperations: Int) -> Bool {          // O(n) -- compare to linear map
+        makeStringList(size: nOperations)
+
+		var dummyArray = [String]()
+        
+        startTimer()
+        for n in 0..<nOperations {
+            dummyArray.append(stringList[n])
+        }
+        endTimer()
+        benchmarkMessageMillis(operationName: "Dummy O(n) (\(nOperations) operations)")
+        OnResults[nOperations] = elapsedTimems()   //place all results in corresponding dictionaries
         return true
     }
     
-    func doTest_OlogN() -> Bool {       // O(log(n)) -- compare to binary map
+    func doTest_OlogN(nOperations: Int) -> Bool {       // O(log(n)) -- compare to binary map
+        makeStringList(size: nOperations)
+
+		var dummyArray = [String]()
+        
+        startTimer()
+        for n in 0..<Int(log2(Double(nOperations))) {
+            dummyArray.append(stringList[n])
+        }
+        endTimer()
+        benchmarkMessageMillis(operationName: "Dummy O(logn) (\(nOperations) operations)")
+        OlogNResults[nOperations] = elapsedTimems()   //place all results in corresponding dictionaries
         return true
     }
     
-    func doTest_Oc() -> Bool {          // O(c) -- compare to hash map
+    func doTest_Oc(nOperations: Int) -> Bool {          // O(c) -- compare to hash map
+        makeStringList(size: nOperations)
+
+		var dummyArray = [String]()
+        
+        startTimer()
+        for n in 0..<10000 {	//or any other value, 10000 chosen just because it's big
+            dummyArray.append(stringList[n])
+        }
+        endTimer()
+        benchmarkMessageMillis(operationName: "Dummy O(c) (\(nOperations) operations)")
+        OcResults[nOperations] = elapsedTimems()   //place all results in corresponding dictionaries
         return true
     }
     
@@ -189,11 +222,13 @@ class Benchmark {
             let _ = linearTest(nOperations: nOperations)
             let _ = binaryTest(nOperations: nOperations)
             let _ = hashTest(nOperations: nOperations)
-            print()
+			let _ = doTest_On(nOperations: nOperations)
+			let _ = doTest_OlogN(nOperations: nOperations)
+			let _ = doTest_Oc(nOperations: nOperations)
         }
     }
     
-    func compareDataBetweenSets(dataset1: [(Int, Double)], dataset2: [(Int, Double)]) {
+    func compareDataBetweenSets(dataset1: [Int: Double], dataset2: [Int: Double]) {
         //get the quotient between times for matching n values in data sets.
         //If the quotients are consistent, the efficiency model is accurate.
         //If they vary wildly, the efficiency model is incorrect.
