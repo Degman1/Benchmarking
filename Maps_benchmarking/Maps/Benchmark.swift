@@ -237,20 +237,20 @@ class Benchmark {
         }
     }
     
-    func compareDataBetweenSets(dataset1: [Int: Double], dataset2: [Int: Double]) {
+    func compareDataBetweenSets(dataset1: [Int: Double], dataset2: [Int: Double]) -> [Int: Double] {    //[# Operations : ratio]
         //get the quotient between times for matching n values in data sets.
         //If the quotients are consistent, the efficiency model is accurate.
         //If they vary wildly, the efficiency model is incorrect.
         //for example, if testResults_On[i]/testResults_LinearGet[i] returns
         //[.2, .201, .198, .189, .211], you know that linear get is almost exactly O(.2n), or O(n)
         //if it is [.2, .501, 9.198, 105.00189, 11913.3], linear get is probably not O(n) at all
-        if dataset.count != dataset2.count {
+        if dataset1.count != dataset2.count {
             print("ERROR: MISMATCHING DATASET LENGTH!");
-            return [1:1.0];
+            return [1:1]
         }
         var comparison = [Int: Double]();
-        for i in dataset1 {
-            comparison[i.key] = dataset1[i.key]! / dataset2[i.key]!;
+        for (key, _) in dataset1 {
+            comparison[key] = dataset1[key]! / dataset2[key]!;
         }
         return comparison
     }
