@@ -22,7 +22,7 @@ class Benchmark {
     var OlogNResults = [Int: Double]()
     var OcResults = [Int: Double]()
     
-    let NUMBER_OPERATIONS = [10000, 20000, 30000, 40000, 50000]   //keep number contant through all operations to get comparable results
+    let NUMBER_OPERATIONS = [100, 500, 1000, 5000, 10000, 50000, 100000]   //keep number contant through all operations to get comparable results
     
     //keep track of timer:
     var startTaskms: Double = 0	//I wanted to make this Float80 but vscode didn't highlight it as a valid type
@@ -82,7 +82,10 @@ class Benchmark {
     
     func benchmarkMessageMillis(operationName: String) {
         print("\(operationName) took \(elapsedTimems()) ms")
-
+    }
+    
+    func ratioOf(_ a: Double, outOf: Double) -> Double {
+        return (a / outOf) * 100
     }
     
     func linearTest(nOperations: Int) -> Bool {  //Bool represents whether the gets + puts actually matched up (checks to make sure maps code ran successfully) -- refer to stulin sample benchmarking code
@@ -156,7 +159,8 @@ class Benchmark {
             map.set(stringList[n], v: stringList[n])
         }
         endTimer()
-        benchmarkMessageMillis(operationName: "Hash Map Set (\(nOperations) operations, \(map.getNumberCollisions()) collisions)")
+        let p = ratioOf(Double(map.getNumberCollisions()), outOf: Double(nOperations))
+        benchmarkMessageMillis(operationName: "Hash Map Set (\(nOperations) operations, \(map.getNumberCollisions()) collisions, \(p)% collision rate)")
         binaryMapSetResults[nOperations] = elapsedTimems()
         
         startTimer()
@@ -167,7 +171,8 @@ class Benchmark {
             if !(value == key) { print("bad hash map... uh oh"); return false }
         }
         endTimer()
-        benchmarkMessageMillis(operationName: "Hash Map Get (\(nOperations) operations, \(map.getNumberCollisions()) collisions)")
+        
+        benchmarkMessageMillis(operationName: "Hash Map Get (\(nOperations) operations, \(map.getNumberCollisions()) collisions, \(p)% collision rate)")
         binaryMapGetResults[nOperations] = elapsedTimems()
         return true
     }
@@ -208,7 +213,7 @@ class Benchmark {
 		var dummyArray = [String]()
         
         startTimer()
-        for n in 0..<10000 {	//or any other value, 10000 chosen just because it's big
+        for n in 0..<nOperations {	//or any other value, 10000 chosen just because it's big
             dummyArray.append(stringList[n])
         }
         endTimer()
