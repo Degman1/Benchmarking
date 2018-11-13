@@ -76,12 +76,8 @@ class Benchmark {
         return Int(elapsedTimems() / 100)
     }
     
-    func benchmarkMessageTenths(operationName: String) {
-        print("\(operationName) took \(elapsedTimeTenthsSeconds()) tenths of a second")
-    }
-    
-    func benchmarkMessageMillis(operationName: String) {
-        print("\(operationName) took \(elapsedTimems()) ms")
+    func benchmarkMessageMillis(operationName: String, time: Double) {
+        print("\(operationName) took \(time) ms")
     }
     
     func ratioOf(_ a: Double, outOf: Double) -> Double {
@@ -93,27 +89,38 @@ class Benchmark {
         var key = ""
         var value = ""
         var index = 0
+        var time = 0.0
         
         let map = LinearMap<String, String>()
-        
-        startTimer()
-        for n in 0..<nOperations {
+        for n in 0..<(nOperations - 1) {    //preset the map so that the # of entries already present through each operation stays constant - leave 1 left though to use to for the set
             map.set(stringList[n], v: stringList[n])
         }
-        endTimer()
-        benchmarkMessageMillis(operationName: "Linear Map Set (\(nOperations) operations)")
-        linearMapSetResults[nOperations] = elapsedTimems()   //place all results in corresponding dictionaries
+        let freshArray = map.keys   //use to refresh keys and values in map each operation
         
-        startTimer()
+        for _ in 0..<nOperations {
+            map.keys = freshArray; map.values = freshArray  //run at start so in end the last key + value is left in map for the get
+            startTimer()
+            map.set(stringList[nOperations - 1], v: stringList[nOperations - 1])
+            endTimer()
+            time += elapsedTimems()
+        }
+        
+        benchmarkMessageMillis(operationName: "Linear Map Set (\(nOperations) operations)", time: time)
+        linearMapSetResults[nOperations] = time / Double(nOperations)   //place all results in corresponding dictionaries
+        
+        time = 0.0
         for _ in 0..<nOperations {
             index = getRandomInt(range: nOperations)
             key = stringList[index]
+            startTimer()
             value = map.get(key)!
+            endTimer()
+            time += getCurrentMillis()
             if !(value == key) { print("bad linear map... uh oh"); return false }
         }
-        endTimer()
-        benchmarkMessageMillis(operationName: "Linear Map Get (\(nOperations) operations)")
-        linearMapGetResults[nOperations] = elapsedTimems()
+        
+        benchmarkMessageMillis(operationName: "Linear Map Get (\(nOperations) operations)", time: time)
+        linearMapGetResults[nOperations] = elapsedTimems() / Double(nOperations) //gives the time per operation
         return true
     }
     
@@ -130,8 +137,8 @@ class Benchmark {
             map.set(stringList[n], v: stringList[n])
         }
         endTimer()
-        benchmarkMessageMillis(operationName: "Binary Map Set (\(nOperations) operations)")
-        binaryMapSetResults[nOperations] = elapsedTimems()
+        benchmarkMessageMillis(operationName: "Binary Map Set (\(nOperations) operations)", time: getCurrentMillis())
+        binaryMapSetResults[nOperations] = elapsedTimems() / Double(nOperations)
         
         startTimer()
         for _ in 0..<nOperations {
@@ -141,8 +148,8 @@ class Benchmark {
             if !(value == key) { print("bad hash map... uh oh"); return false }
         }
         endTimer()
-        benchmarkMessageMillis(operationName: "Binary Map Get (\(nOperations) operations)")
-        binaryMapGetResults[nOperations] = elapsedTimems()
+        benchmarkMessageMillis(operationName: "Binary Map Get (\(nOperations) operations)", time: getCurrentMillis())
+        binaryMapGetResults[nOperations] = elapsedTimems() / Double(nOperations)
         return true
     }
     
@@ -160,8 +167,8 @@ class Benchmark {
         }
         endTimer()
         let p = ratioOf(Double(map.getNumberCollisions()), outOf: Double(nOperations))
-        benchmarkMessageMillis(operationName: "Hash Map Set (\(nOperations) operations, \(map.getNumberCollisions()) collisions, \(p)% collision rate)")
-        hashMapSetResults[nOperations] = elapsedTimems()
+        benchmarkMessageMillis(operationName: "Hash Map Set (\(nOperations) operations, \(map.getNumberCollisions()) collisions, \(p)% collision rate)", time: getCurrentMillis())
+        hashMapSetResults[nOperations] = elapsedTimems() / Double(nOperations)
         
         startTimer()
         for _ in 0..<nOperations {
@@ -172,14 +179,15 @@ class Benchmark {
         }
         endTimer()
         
-        benchmarkMessageMillis(operationName: "Hash Map Get (\(nOperations) operations, \(map.getNumberCollisions()) collisions, \(p)% collision rate)")
-        hashMapGetResults[nOperations] = elapsedTimems()
+        benchmarkMessageMillis(operationName: "Hash Map Get (\(nOperations) operations, \(map.getNumberCollisions()) collisions, \(p)% collision rate)", time: getCurrentMillis())
+        hashMapGetResults[nOperations] = elapsedTimems() / Double(nOperations)
         return true
     }
     
     func doTest_On(nOperations: Int) -> Bool {          // O(n) -- compare to linear map
+        let repeats = 200   //to get average
         var total: Double = 0.0
-        for _ in 0..<200 {  //gets average of the values b/c they seem to be able to vary a lot every now and then
+        for _ in 0..<repeats {  //gets average of the values b/c they seem to be able to vary a lot every now and then
             makeStringList(size: nOperations)
             
             var dummyArray = [String]()
@@ -190,12 +198,10 @@ class Benchmark {
                 dummyArray2.append(stringList[n])
             }
             endTimer()
-            //OnResults[nOperations] = elapsedTimems()   //place all results in corresponding dictionaries
             total += elapsedTimems()
-            //return true
         }
-        benchmarkMessageMillis(operationName: "Dummy O(n) average (\(nOperations) operations)")
-        OnResults[nOperations] = total / 100
+        benchmarkMessageMillis(operationName: "Dummy O(n) average (\(nOperations) operations)", time: getCurrentMillis())
+        OnResults[nOperations] = total / Double(repeats)
         return true
     }
     
@@ -209,7 +215,7 @@ class Benchmark {
             dummyArray.append(stringList[n])
         }
         endTimer()
-        benchmarkMessageMillis(operationName: "Dummy O(logn) (\(nOperations) operations)")
+        benchmarkMessageMillis(operationName: "Dummy O(logn) (\(nOperations) operations)", time: getCurrentMillis())
         OlogNResults[nOperations] = elapsedTimems()   //place all results in corresponding dictionaries
         return true
     }
@@ -224,7 +230,7 @@ class Benchmark {
             dummyArray.append(stringList[n])
         }
         endTimer()
-        benchmarkMessageMillis(operationName: "Dummy O(c) (\(nOperations) operations)")
+        benchmarkMessageMillis(operationName: "Dummy O(c) (\(nOperations) operations)", time: getCurrentMillis())
         OcResults[nOperations] = elapsedTimems()   //place all results in corresponding dictionaries
         return true
     }
@@ -236,7 +242,7 @@ class Benchmark {
             print()
             let _ = binaryTest(nOperations: nOperations)
             print()
-            let _ = hashTest(nOperations: nOperations, size: 100)
+            let _ = hashTest(nOperations: nOperations, size: nOperations / 3)
             print()
             let _ = hashTest(nOperations: nOperations, size: nOperations * 3)
             print()
@@ -309,6 +315,9 @@ class Benchmark {
 func doBenchmark() {
     let b = Benchmark()
     let _ = b.doTests()
+    print()
+    print(b.statistics())
+    print()
     print(b.dataAnalysis())
     
 }
