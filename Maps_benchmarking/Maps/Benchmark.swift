@@ -143,13 +143,13 @@ class Benchmark {
         return true
     }
     
-    func hashTest(nOperations: Int) -> Bool {
+    func hashTest(nOperations: Int, size: Int) -> Bool {
         makeStringList(size: nOperations)
         var key = ""
         var value = ""
         var index = 0
         
-        let map = HashMap<String, String>(initialArraySize: 20000)
+        let map = HashMap<String, String>(initialArraySize: size)
         
         startTimer()
         for n in 0..<nOperations {
@@ -167,7 +167,7 @@ class Benchmark {
             if !(value == key) { print("bad hash map... uh oh"); return false }
         }
         endTimer()
-        benchmarkMessageMillis(operationName: "Hash Map Get (\(nOperations) operations)")
+        benchmarkMessageMillis(operationName: "Hash Map Get (\(nOperations) operations, \(map.getNumberCollisions()) collisions)")
         binaryMapGetResults[nOperations] = elapsedTimems()
         return true
     }
@@ -219,12 +219,21 @@ class Benchmark {
     
     func doTests() {
         for nOperations in NUMBER_OPERATIONS {
+            print("Running tests with \(nOperations) operations:")
             let _ = linearTest(nOperations: nOperations)
+            print()
             let _ = binaryTest(nOperations: nOperations)
-            let _ = hashTest(nOperations: nOperations)
+            print()
+            let _ = hashTest(nOperations: nOperations, size: 100)
+            print()
+            let _ = hashTest(nOperations: nOperations, size: nOperations * 3)
+            print()
 			let _ = doTest_On(nOperations: nOperations)
+            print()
 			let _ = doTest_OlogN(nOperations: nOperations)
+            print()
 			let _ = doTest_Oc(nOperations: nOperations)
+            print("\n\n")
         }
     }
     
