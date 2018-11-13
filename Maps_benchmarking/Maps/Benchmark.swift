@@ -22,7 +22,7 @@ class Benchmark {
     var OlogNResults = [Int: Double]()
     var OcResults = [Int: Double]()
     
-    let NUMBER_OPERATIONS = [100, 500, 1000, 5000, 10000, 50000, 100000]   //keep number contant through all operations to get comparable results
+    let NUMBER_OPERATIONS = [100, 500, 1000, 5000]   //keep number contant through all operations to get comparable results
     
     //keep track of timer:
     var startTaskms: Double = 0	//I wanted to make this Float80 but vscode didn't highlight it as a valid type
@@ -161,7 +161,7 @@ class Benchmark {
         endTimer()
         let p = ratioOf(Double(map.getNumberCollisions()), outOf: Double(nOperations))
         benchmarkMessageMillis(operationName: "Hash Map Set (\(nOperations) operations, \(map.getNumberCollisions()) collisions, \(p)% collision rate)")
-        binaryMapSetResults[nOperations] = elapsedTimems()
+        hashMapSetResults[nOperations] = elapsedTimems()
         
         startTimer()
         for _ in 0..<nOperations {
@@ -173,22 +173,29 @@ class Benchmark {
         endTimer()
         
         benchmarkMessageMillis(operationName: "Hash Map Get (\(nOperations) operations, \(map.getNumberCollisions()) collisions, \(p)% collision rate)")
-        binaryMapGetResults[nOperations] = elapsedTimems()
+        hashMapGetResults[nOperations] = elapsedTimems()
         return true
     }
     
     func doTest_On(nOperations: Int) -> Bool {          // O(n) -- compare to linear map
-        makeStringList(size: nOperations)
-
-		var dummyArray = [String]()
-        
-        startTimer()
-        for n in 0..<nOperations {
-            dummyArray.append(stringList[n])
+        var total: Double = 0.0
+        for _ in 0..<200 {  //gets average of the values b/c they seem to be able to vary a lot every now and then
+            makeStringList(size: nOperations)
+            
+            var dummyArray = [String]()
+            var dummyArray2 = [String]()
+            startTimer()
+            for n in 0..<nOperations {
+                dummyArray.append(stringList[n])
+                dummyArray2.append(stringList[n])
+            }
+            endTimer()
+            //OnResults[nOperations] = elapsedTimems()   //place all results in corresponding dictionaries
+            total += elapsedTimems()
+            //return true
         }
-        endTimer()
-        benchmarkMessageMillis(operationName: "Dummy O(n) (\(nOperations) operations)")
-        OnResults[nOperations] = elapsedTimems()   //place all results in corresponding dictionaries
+        benchmarkMessageMillis(operationName: "Dummy O(n) average (\(nOperations) operations)")
+        OnResults[nOperations] = total / 100
         return true
     }
     
@@ -242,7 +249,7 @@ class Benchmark {
         }
     }
     
-    func compareDataBetweenSets(dataset1: [Int: Double], dataset2: [Int: Double]) -> [Int: Double] {    //[# Operations : ratio]
+    func compareDataBetweenSets(_ dataset1: [Int: Double], _ dataset2: [Int: Double]) -> [Int: Double] {    //[# Operations : ratio]
         //get the quotient between times for matching n values in data sets.
         //If the quotients are consistent, the efficiency model is accurate.
         //If they vary wildly, the efficiency model is incorrect.
@@ -250,7 +257,7 @@ class Benchmark {
         //[.2, .201, .198, .189, .211], you know that linear get is almost exactly O(.2n), or O(n)
         //if it is [.2, .501, 9.198, 105.00189, 11913.3], linear get is probably not O(n) at all
         if dataset1.count != dataset2.count {
-            print("ERROR: MISMATCHING DATASET LENGTH!");
+            print("ERROR: MISMATCHING DATASET LENGTH! (dataset1: \(dataset1.count), dataset2: \(dataset2.count))");
             return [1:1]
         }
         var comparison = [Int: Double]();
@@ -262,19 +269,30 @@ class Benchmark {
     
     func dataAnalysis() -> String { //returns information comparing the results of each test that was run
         //include comparisons between map results and comparisons between generic Big-O results
-		var analysisLinGet = compareDataBetweenSets(linearMapGetResults, OnResults);
-		var analysisLinSet = compareDataBetweenSets(linearMapSetResults, OnResults);
+		let analysisLinGet = compareDataBetweenSets(linearMapGetResults, OnResults);
+		let analysisLinSet = compareDataBetweenSets(linearMapSetResults, OnResults);
 
-		var analysisBinGet = compareDataBetweenSets(binaryMapGetResults, OlogNResults);
-		var analysisBinSetBest = compareDataBetweenSets(binaryMapSetResults, OlogNResults);
-		var analysisBinSetWorst = compareDataBetweenSets(binaryMapSetResults, OnResults);
+		let analysisBinGet = compareDataBetweenSets(binaryMapGetResults, OlogNResults);
+		let analysisBinSetBest = compareDataBetweenSets(binaryMapSetResults, OlogNResults);
+		let analysisBinSetWorst = compareDataBetweenSets(binaryMapSetResults, OnResults);
 
-		var analysisHashSetBest = compareDataBetweenSets(hashMapSetResults, OcResults);
-		var analysisHashSetWorst = compareDataBetweenSets(hashMapSetResults, OnResults);
-		var analysisHashGetBest = compareDataBetweenSets(hashMapGetResults, OcResults);
-		var analysisHashGetWorst = compareDataBetweenSets(hashMapGetResults, OnResults);
-
-        return "Linear Get: \(analysisLinGet.description)\nLinear Set: \(analysisLinSet.description)\nBinary Get: \(analysisBinGet.description)\nBinary Set (Best Case): \(analysisBinSetBest.description)\nBinary Set (Worst Case): \(analysisBinSetWorst.description)\nHash Set (Best Case): \(analysisHashSetBest.description)\nHash Set (Worst Case): \(analysisHashSetWorst.description)\nHash Get (Best Case): \(analysisHashGetBest.description)\nHash Get (Worst Case): \(analysisHashGetWorst.description)\n";
+		let analysisHashSetBest = compareDataBetweenSets(hashMapSetResults, OcResults);
+		let analysisHashSetWorst = compareDataBetweenSets(hashMapSetResults, OnResults);
+		let analysisHashGetBest = compareDataBetweenSets(hashMapGetResults, OcResults);
+		let analysisHashGetWorst = compareDataBetweenSets(hashMapGetResults, OnResults);
+        
+        var output = ""
+        output += "Linear Get: \(analysisLinGet)\n"
+        output += "Linear Set: \(analysisLinSet)\n"
+        output += "Binary Get: \(analysisBinGet)\n"
+        output += "Binary Set (Worst Case): \(analysisBinSetWorst)\n"
+        output += "Binary Set (Best Case): \(analysisBinSetBest)\n" //if string already exists
+        output += "Hash Set (Best Case): \(analysisHashSetBest)\n"
+        output += "Hash Set (Worst Case): \(analysisHashSetWorst)\n"
+        output += "Hash Get (Best Case): \(analysisHashGetBest)\n"
+        output += "Hash Get (Worst Case): \(analysisHashGetWorst)\n"
+        
+        return output
     }
     
     func statistics() {
@@ -291,5 +309,6 @@ class Benchmark {
 func doBenchmark() {
     let b = Benchmark()
     let _ = b.doTests()
+    print(b.dataAnalysis())
     
 }

@@ -11,9 +11,13 @@ import Foundation
 class LinearMap<K: Hashable, V>: AbstractMap<Any, Any> {
     var keys = [K]()
     var values = [V]()
-        
+    
     fileprivate func findKeyIndex(_ k: K) -> Int? {
-        return keys.index(of: k)
+        //return keys.index(of: k)
+        for i in 0..<keys.count {   //do this instead of .index(of:) to know exactly whats happening
+            if keys[i] == k {return i}
+        }
+        return nil
     }
     
     func set(_ k: K, v: V) {
