@@ -149,14 +149,14 @@ class Benchmark {
         var value = ""
         var index = 0
         
-        let map = HashMap<String, String>()
+        let map = HashMap<String, String>(initialArraySize: 20000)
         
         startTimer()
         for n in 0..<nOperations {
             map.set(stringList[n], v: stringList[n])
         }
         endTimer()
-        benchmarkMessageMillis(operationName: "Hash Map Set (\(nOperations) operations)")
+        benchmarkMessageMillis(operationName: "Hash Map Set (\(nOperations) operations, \(map.getNumberCollisions()) collisions)")
         binaryMapSetResults[nOperations] = elapsedTimems()
         
         startTimer()
@@ -252,7 +252,6 @@ class Benchmark {
         print("\tHash Get Test Results - \(linearMapGetResults)")
     }
 }
-
 
 func doBenchmark() {
     let b = Benchmark()
