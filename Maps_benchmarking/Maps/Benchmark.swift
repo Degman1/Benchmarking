@@ -257,7 +257,19 @@ class Benchmark {
     
     func dataAnalysis() -> String { //returns information comparing the results of each test that was run
         //include comparisons between map results and comparisons between generic Big-O results
-        return ""
+		var analysisLinGet = compareDataBetweenSets(linearMapGetResults, OnResults);
+		var analysisLinSet = compareDataBetweenSets(linearMapSetResults, OnResults);
+
+		var analysisBinGet = compareDataBetweenSets(binaryMapGetResults, OlogNResults);
+		var analysisBinSetBest = compareDataBetweenSets(binaryMapSetResults, OlogNResults);
+		var analysisBinSetWorst = compareDataBetweenSets(binaryMapSetResults, OnResults);
+
+		var analysisHashSetBest = compareDataBetweenSets(hashMapSetResults, OcResults);
+		var analysisHashSetWorst = compareDataBetweenSets(hashMapSetResults, OnResults);
+		var analysisHashGetBest = compareDataBetweenSets(hashMapGetResults, OcResults);
+		var analysisHashGetWorst = compareDataBetweenSets(hashMapGetResults, OnResults);
+
+        return "Linear Get: \(analysisLinGet.description)\nLinear Set: \(analysisLinSet.description)\nBinary Get: \(analysisBinGet.description)\nBinary Set (Best Case): \(analysisBinSetBest.description)\nBinary Set (Worst Case): \(analysisBinSetWorst.description)\nHash Set (Best Case): \(analysisHashSetBest.description)\nHash Set (Worst Case): \(analysisHashSetWorst.description)\nHash Get (Best Case): \(analysisHashGetBest.description)\nHash Get (Worst Case): \(analysisHashGetWorst.description)\n";
     }
     
     func statistics() {
