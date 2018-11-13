@@ -22,7 +22,7 @@ class Benchmark {
     var OlogNResults = [Int: Double]()
     var OcResults = [Int: Double]()
     
-    let NUMBER_OPERATIONS = [100, 500, 1000, 5000]   //keep number contant through all operations to get comparable results
+    let NUMBER_OPERATIONS = [100, 500, 1000, 5000, 10000]   //keep number contant through all operations to get comparable results
     
     //keep track of timer:
     var startTaskms: Double = 0	//I wanted to make this Float80 but vscode didn't highlight it as a valid type
