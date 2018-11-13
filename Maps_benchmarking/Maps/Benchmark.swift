@@ -96,11 +96,12 @@ class Benchmark {
             map.set(stringList[n], v: stringList[n])
         }
         let freshArray = map.keys   //use to refresh keys and values in map each operation
+        let addValue = stringList[nOperations - 1]
         
         for _ in 0..<nOperations {
             map.keys = freshArray; map.values = freshArray  //run at start so in end the last key + value is left in map for the get
             startTimer()
-            map.set(stringList[nOperations - 1], v: stringList[nOperations - 1])
+            map.set(addValue, v: addValue)
             endTimer()
             time += elapsedTimems()
         }
@@ -115,12 +116,12 @@ class Benchmark {
             startTimer()
             value = map.get(key)!
             endTimer()
-            time += getCurrentMillis()
+            time += elapsedTimems()
             if !(value == key) { print("bad linear map... uh oh"); return false }
         }
         
         benchmarkMessageMillis(operationName: "Linear Map Get (\(nOperations) operations)", time: time)
-        linearMapGetResults[nOperations] = elapsedTimems() / Double(nOperations) //gives the time per operation
+        linearMapGetResults[nOperations] = elapsedTimems() //gives the time per operation
         return true
     }
     
@@ -137,7 +138,7 @@ class Benchmark {
             map.set(stringList[n], v: stringList[n])
         }
         endTimer()
-        benchmarkMessageMillis(operationName: "Binary Map Set (\(nOperations) operations)", time: getCurrentMillis())
+        benchmarkMessageMillis(operationName: "Binary Map Set (\(nOperations) operations)", time: elapsedTimems())
         binaryMapSetResults[nOperations] = elapsedTimems() / Double(nOperations)
         
         startTimer()
@@ -148,7 +149,7 @@ class Benchmark {
             if !(value == key) { print("bad hash map... uh oh"); return false }
         }
         endTimer()
-        benchmarkMessageMillis(operationName: "Binary Map Get (\(nOperations) operations)", time: getCurrentMillis())
+        benchmarkMessageMillis(operationName: "Binary Map Get (\(nOperations) operations)", time: elapsedTimems())
         binaryMapGetResults[nOperations] = elapsedTimems() / Double(nOperations)
         return true
     }
@@ -179,7 +180,7 @@ class Benchmark {
         }
         endTimer()
         
-        benchmarkMessageMillis(operationName: "Hash Map Get (\(nOperations) operations, \(map.getNumberCollisions()) collisions, \(p)% collision rate)", time: getCurrentMillis())
+        benchmarkMessageMillis(operationName: "Hash Map Get (\(nOperations) operations, \(map.getNumberCollisions()) collisions, \(p)% collision rate)", time: elapsedTimems())
         hashMapGetResults[nOperations] = elapsedTimems() / Double(nOperations)
         return true
     }
@@ -200,7 +201,7 @@ class Benchmark {
             endTimer()
             total += elapsedTimems()
         }
-        benchmarkMessageMillis(operationName: "Dummy O(n) average (\(nOperations) operations)", time: getCurrentMillis())
+        benchmarkMessageMillis(operationName: "Dummy O(n) average (\(nOperations) operations)", time: elapsedTimems())
         OnResults[nOperations] = total / Double(repeats)
         return true
     }
@@ -215,7 +216,7 @@ class Benchmark {
             dummyArray.append(stringList[n])
         }
         endTimer()
-        benchmarkMessageMillis(operationName: "Dummy O(logn) (\(nOperations) operations)", time: getCurrentMillis())
+        benchmarkMessageMillis(operationName: "Dummy O(logn) (\(nOperations) operations)", time: elapsedTimems())
         OlogNResults[nOperations] = elapsedTimems()   //place all results in corresponding dictionaries
         return true
     }
@@ -230,7 +231,7 @@ class Benchmark {
             dummyArray.append(stringList[n])
         }
         endTimer()
-        benchmarkMessageMillis(operationName: "Dummy O(c) (\(nOperations) operations)", time: getCurrentMillis())
+        benchmarkMessageMillis(operationName: "Dummy O(c) (\(nOperations) operations)", time: elapsedTimems())
         OcResults[nOperations] = elapsedTimems()   //place all results in corresponding dictionaries
         return true
     }
