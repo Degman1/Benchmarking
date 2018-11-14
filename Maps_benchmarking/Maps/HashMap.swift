@@ -44,6 +44,7 @@ class HashMap<K: Hashable, V>: AbstractMap<Any, Any> {
             return nil
         } else {
             return linearMap[k]
+            numberCollisions += 1
         }
     }
     

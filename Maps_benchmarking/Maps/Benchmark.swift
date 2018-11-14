@@ -22,8 +22,9 @@ class Benchmark {
     var OlogNResults = [Int: Double]()
     var OcResults = [Int: Double]()
     
-    let NUMBER_OPERATIONS = [1000, 5000, 10000]   //keep number contant through all operations to get comparable results
-    let MAX_ARRAY_SIZE = 1000
+    let TOTAL_OPERATIONS = 100   //keep number contant through all operations to get comparable results
+    let array_sizes = [1000, 5000, 10000, 50000, 100000]   //change to see how array size changes the timing
+    var bigA = 100;    //TODO: make bigger for real test for accuracy
     
     //keep track of timer:
     var startTaskms: Double = 0	//I wanted to make this Float80 but vscode didn't highlight it as a valid type
@@ -141,14 +142,35 @@ class Benchmark {
         desc += "\tHash Get Test Results - \(linearMapGetResults)"
         return desc
     }
+    
+    func runTest(testWorked: Bool) {
+        if testWorked { print("linear maps and testing successful!\n") }
+        else { print("linear maps and testing failed\n") }
+    }
+    
+    func doTests() {
+        //runTest(testWorked: linearTest())
+        //runTest(testWorked: binaryTest())
+        runTest(testWorked: hashTest())
+        /*let _ = hashTest(nOperations: nOperations, size: nOperations / 3)
+         print()
+         let _ = hashTest(nOperations: nOperations, size: nOperations * 3)
+         print()
+         let _ = doTest_On(nOperations: nOperations)
+         print()
+         let _ = doTest_OlogN(nOperations: nOperations)
+         print()
+         let _ = doTest_Oc(nOperations: nOperations)
+         print("\n\n")*/
+    }
 }
 
 func doBenchmark() {
     let b = Benchmark()
     let _ = b.doTests()
-    print()
+    /*print()
     print(b.statistics)
     print()
     print(b.dataAnalysis())
-    
+    */
 }
