@@ -11,6 +11,8 @@ import Foundation
 //: extension for map testing
 
 extension Benchmark {
+	var bigA = 10;	//TODO: make bigger for real test for accuracy
+
     func doLinearTest(nOperations: Int) -> [Double] { //return time taken
         makeStringList(size: MAX_ARRAY_SIZE)                   //to put in maps -- later use to get out of maps
         var key = ""
@@ -57,7 +59,7 @@ extension Benchmark {
     func linearTest(nOperations: Int) -> Bool {             //bool represents if map works
         var total_set = 0.0
         var total_get = 0.0
-        let a = 10  //TODO: make larger for real test for accuracy
+        let a = bigA;
         
         for _ in 0..<a {
             let result = doLinearTest(nOperations: nOperations)
@@ -73,63 +75,185 @@ extension Benchmark {
         return true
     }
     
-    func binaryTest(nOperations: Int) -> Bool {
-        makeStringList(size: nOperations)
+    // func binaryTest(nOperations: Int) -> Bool {
+    //     makeStringList(size: nOperations)
+    //     var key = ""
+    //     var value = ""
+    //     var index = 0
+        
+    //     let map = BinaryMap<String, String>()
+        
+    //     startTimer()
+    //     for n in 0..<nOperations {
+    //         map.set(stringList[n], v: stringList[n])
+    //     }
+    //     endTimer()
+    //     benchmarkMessageMillis(operationName: "Binary Map Set (\(nOperations) operations)", time: elapsedTimems())
+    //     binaryMapSetResults[nOperations] = elapsedTimems() / Double(nOperations)
+        
+    //     startTimer()
+    //     for _ in 0..<nOperations {
+    //         index = getRandomInt(range: nOperations)
+    //         key = stringList[index]
+    //         value = map.get(key)!
+    //         if !(value == key) { print("bad hash map... uh oh"); return false }
+    //     }
+    //     endTimer()
+    //     benchmarkMessageMillis(operationName: "Binary Map Get (\(nOperations) operations)", time: elapsedTimems())
+    //     binaryMapGetResults[nOperations] = elapsedTimems() / Double(nOperations)
+    //     return true
+    // }
+	func doBinaryTest(nOperations: Int) -> [Double] { //return time taken
+        makeStringList(size: MAX_ARRAY_SIZE)                   //to put in maps -- later use to get out of maps
         var key = ""
         var value = ""
         var index = 0
+        var time = 0.0
         
         let map = BinaryMap<String, String>()
+        for n in 0..<(MAX_ARRAY_SIZE - 1) {                    //preset the map contents
+            map.set(stringList[n], v: stringList[n])        //# of entries present stays constant through all operations
+        }                                                   //leave 1 left though to use to for the set value
         
-        startTimer()
-        for n in 0..<nOperations {
-            map.set(stringList[n], v: stringList[n])
-        }
-        endTimer()
-        benchmarkMessageMillis(operationName: "Binary Map Set (\(nOperations) operations)", time: elapsedTimems())
-        binaryMapSetResults[nOperations] = elapsedTimems() / Double(nOperations)
+        let freshArray = map.keys                           //use to refresh keys and values in map each operation
+        let addValue = stringList[MAX_ARRAY_SIZE - 1]          //last value left to add to map
         
-        startTimer()
         for _ in 0..<nOperations {
-            index = getRandomInt(range: nOperations)
-            key = stringList[index]
-            value = map.get(key)!
-            if !(value == key) { print("bad hash map... uh oh"); return false }
+            map.keys = freshArray; map.values = freshArray  //run at start to leave map full at end of looop
+            startTimer()
+            map.set(addValue, v: addValue)
+            endTimer()
+            time += elapsedTimems()
         }
-        endTimer()
-        benchmarkMessageMillis(operationName: "Binary Map Get (\(nOperations) operations)", time: elapsedTimems())
-        binaryMapGetResults[nOperations] = elapsedTimems() / Double(nOperations)
+        
+        let set = time / Double(nOperations)
+        
+        time = 0.0                                          //reset time
+        for _ in 0..<nOperations {
+            index = getRandomInt(range: MAX_ARRAY_SIZE)
+            key = stringList[index]
+            startTimer()
+            value = map.get(key)!
+            endTimer()
+            time += elapsedTimems()
+            if !(value == key) { print("bad binary map... uh oh"); return [0] }   //something went wrong with map
+        }
+		//returns set, get
+        return [set, time / Double(nOperations)]
+    }
+
+	func binaryTest(nOperations: Int) -> Bool {             //bool represents if map works
+        var total_set = 0.0
+        var total_get = 0.0
+        let a = bigA;
+        
+        for _ in 0..<a {
+            let result = doBinaryTest(nOperations: nOperations)
+            if result[0] == 0 {return false}
+            total_set += result[0]
+            total_get += result[1]
+        }
+        
+        benchmarkMessageMillis(operationName: "Binary Map Set (\(nOperations) operations)", time: total_set / Double(a))
+        benchmarkMessageMillis(operationName: "Binary Map Get (\(nOperations) operations)", time: total_get / Double(a))
+        binaryMapSetResults[nOperations] = total_set / Double(a)
+        binaryMapGetResults[nOperations] = total_get / Double(a)
         return true
     }
     
-    func hashTest(nOperations: Int, size: Int) -> Bool {
-        makeStringList(size: nOperations)
+    // func hashTest(nOperations: Int, size: Int) -> Bool {
+    //     makeStringList(size: nOperations)
+    //     var key = ""
+    //     var value = ""
+    //     var index = 0
+        
+    //     let map = HashMap<String, String>(initialArraySize: size)
+        
+    //     startTimer()
+    //     for n in 0..<nOperations {
+    //         map.set(stringList[n], v: stringList[n])
+    //     }
+    //     endTimer()
+    //     let p = ratioOf(Double(map.getNumberCollisions()), outOf: Double(nOperations))
+    //     benchmarkMessageMillis(operationName: "Hash Map Set (\(nOperations) operations, \(map.getNumberCollisions()) collisions, \(p)% collision rate)", time: getCurrentMillis())
+    //     hashMapSetResults[nOperations] = elapsedTimems() / Double(nOperations)
+        
+    //     startTimer()
+    //     for _ in 0..<nOperations {
+    //         index = getRandomInt(range: nOperations)
+    //         key = stringList[index]
+    //         value = map.get(key)!
+    //         if !(value == key) { print("bad hash map... uh oh"); return false }
+    //     }
+    //     endTimer()
+        
+    //     benchmarkMessageMillis(operationName: "Hash Map Get (\(nOperations) operations, \(map.getNumberCollisions()) collisions, \(p)% collision rate)", time: elapsedTimems())
+    //     hashMapGetResults[nOperations] = elapsedTimems() / Double(nOperations)
+    //     return true
+    // }
+	func doHashTest(nOperations: Int) -> [Double] { //return time taken
+        makeStringList(size: MAX_ARRAY_SIZE)                   //to put in maps -- later use to get out of maps
         var key = ""
         var value = ""
         var index = 0
+        var time = 0.0
         
-        let map = HashMap<String, String>(initialArraySize: size)
+        let map = HashMap<String, String>(initialArraySize: nOperations * 3);
+        for n in 0..<(MAX_ARRAY_SIZE - 1) {                    //preset the map contents
+            map.set(stringList[n], v: stringList[n])        //# of entries present stays constant through all operations
+        }                                                   //leave 1 left though to use to for the set value
         
-        startTimer()
-        for n in 0..<nOperations {
-            map.set(stringList[n], v: stringList[n])
-        }
-        endTimer()
-        let p = ratioOf(Double(map.getNumberCollisions()), outOf: Double(nOperations))
-        benchmarkMessageMillis(operationName: "Hash Map Set (\(nOperations) operations, \(map.getNumberCollisions()) collisions, \(p)% collision rate)", time: getCurrentMillis())
-        hashMapSetResults[nOperations] = elapsedTimems() / Double(nOperations)
+        let freshArray = map.keys                           //use to refresh keys and values in map each operation
+        let addValue = stringList[MAX_ARRAY_SIZE - 1]          //last value left to add to map
         
-        startTimer()
         for _ in 0..<nOperations {
-            index = getRandomInt(range: nOperations)
-            key = stringList[index]
-            value = map.get(key)!
-            if !(value == key) { print("bad hash map... uh oh"); return false }
+            map.keys = freshArray; map.values = freshArray  //run at start to leave map full at end of looop
+            startTimer()
+            map.set(addValue, v: addValue)
+            endTimer()
+            time += elapsedTimems()
         }
-        endTimer()
         
-        benchmarkMessageMillis(operationName: "Hash Map Get (\(nOperations) operations, \(map.getNumberCollisions()) collisions, \(p)% collision rate)", time: elapsedTimems())
-        hashMapGetResults[nOperations] = elapsedTimems() / Double(nOperations)
+		let c = map.getNumberCollisions()	//save set collisions
+		map.numberCollisions = 0;	//reset for get
+        let set = time / Double(nOperations)
+        
+        time = 0.0                                          //reset time
+        for _ in 0..<nOperations {
+            index = getRandomInt(range: MAX_ARRAY_SIZE)
+            key = stringList[index]
+            startTimer()
+            value = map.get(key)!
+            endTimer()
+            time += elapsedTimems()
+            if !(value == key) { print("bad binary map... uh oh"); return [0] }   //something went wrong with map
+        }
+		//since the next function needs to know the number of collisions but has no access to the map, it is being
+		//returned as a third element and fourth of the set
+		//returns set, get, percent collisions
+        return [set, time / Double(nOperations), c, map.getNumberCollisions()]
+    }
+
+	func hashTest(nOperations: Int) -> Bool {             //bool represents if map works
+        var total_set = 0.0
+        var total_get = 0.0
+		var numSetCollisions = 0;
+		var numGetCollisions = 0;
+        let a = bigA;
+        
+        for _ in 0..<a {
+            let result = doHashTest(nOperations: nOperations)
+            if result[0] == 0 {return false}
+            total_set += result[0]
+            total_get += result[1]
+			numSetCollisions = result[2];
+			numGetCollisions = result[3];
+        }
+        
+        benchmarkMessageMillis(operationName: "Hash Map Set (\(nOperations) operations, \(numSetCollisions) collisions, \(Double(numSetCollisions) / Double(nOperations)% collisions))", time: total_set / Double(a))
+        benchmarkMessageMillis(operationName: "Hash Map Get (\(nOperations) operations, \(numGetCollisions) collisions, \(Double(numGetCollisions) / Double(nOperations)% collisions)", time: total_get / Double(a))
+        hashMapSetResults[nOperations] = total_set / Double(a)
+        hashMapGetResults[nOperations] = total_get / Double(a)
         return true
     }
 }
