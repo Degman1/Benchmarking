@@ -8,46 +8,68 @@
 
 import Foundation
 
-//extension for map testing
+//: extension for map testing
+
 extension Benchmark {
-    func linearTest(nOperations: Int) -> Bool {  //Bool represents whether the gets + puts actually matched up (checks to make sure maps code ran successfully) -- refer to stulin sample benchmarking code
-        makeStringList(size: nOperations)   //to put in maps -- later use to get out of maps
+    func doLinearTest(nOperations: Int) -> [Double] { //return time taken
+        makeStringList(size: MAX_ARRAY_SIZE)                   //to put in maps -- later use to get out of maps
         var key = ""
         var value = ""
         var index = 0
         var time = 0.0
         
         let map = LinearMap<String, String>()
-        for n in 0..<(nOperations - 1) {    //preset the map so that the # of entries already present through each operation stays constant - leave 1 left though to use to for the set
-            map.set(stringList[n], v: stringList[n])
-        }
-        let freshArray = map.keys   //use to refresh keys and values in map each operation
-        let addValue = stringList[nOperations - 1]
+        for n in 0..<(MAX_ARRAY_SIZE - 1) {                    //preset the map contents
+            map.set(stringList[n], v: stringList[n])        //# of entries present stays constant through all operations
+        }                                                   //leave 1 left though to use to for the set value
+        
+        let freshArray = map.keys                           //use to refresh keys and values in map each operation
+        let addValue = stringList[MAX_ARRAY_SIZE - 1]          //last value left to add to map
         
         for _ in 0..<nOperations {
-            map.keys = freshArray; map.values = freshArray  //run at start so in end the last key + value is left in map for the get
+            map.keys = freshArray; map.values = freshArray  //run at start to leave map full at end of looop
             startTimer()
             map.set(addValue, v: addValue)
             endTimer()
             time += elapsedTimems()
         }
         
-        benchmarkMessageMillis(operationName: "Linear Map Set (\(nOperations) operations)", time: time)
-        linearMapSetResults[nOperations] = time / Double(nOperations)   //place all results in corresponding dictionaries
+        //benchmarkMessageMillis(operationName: "Linear Map Set (\(nOperations) operations)", time: time)
+        //linearMapSetResults[nOperations] = time / Double(nOperations)      //place all results in dictionaries
+        let set = time / Double(nOperations)
         
-        time = 0.0
+        time = 0.0                                          //reset time
         for _ in 0..<nOperations {
-            index = getRandomInt(range: nOperations)
+            index = getRandomInt(range: MAX_ARRAY_SIZE)
             key = stringList[index]
             startTimer()
             value = map.get(key)!
             endTimer()
             time += elapsedTimems()
-            if !(value == key) { print("bad linear map... uh oh"); return false }
+            if !(value == key) { print("bad linear map... uh oh"); return [0] }   //something went wrong with map
         }
         
-        benchmarkMessageMillis(operationName: "Linear Map Get (\(nOperations) operations)", time: time)
-        linearMapGetResults[nOperations] = elapsedTimems() //gives the time per operation
+        //benchmarkMessageMillis(operationName: "Linear Map Get (\(nOperations) operations)", time: time)
+        //linearMapGetResults[nOperations] = time / Double(nOperations) //gives the time per operation
+        return [set, time / Double(nOperations)]
+    }
+    
+    func linearTest(nOperations: Int) -> Bool {             //bool represents if map works
+        var total_set = 0.0
+        var total_get = 0.0
+        let a = 10  //TODO: make larger for real test for accuracy
+        
+        for _ in 0..<a {
+            let result = doLinearTest(nOperations: nOperations)
+            if result[0] == 0 {return false}
+            total_set += result[0]
+            total_get += result[1]
+        }
+        
+        benchmarkMessageMillis(operationName: "Linear Map Set (\(nOperations) operations)", time: total_set / Double(a))
+        benchmarkMessageMillis(operationName: "Linear Map Get (\(nOperations) operations)", time: total_get / Double(a))
+        linearMapSetResults[nOperations] = total_set / Double(a)
+        linearMapGetResults[nOperations] = total_get / Double(a)
         return true
     }
     

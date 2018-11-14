@@ -13,10 +13,8 @@ class LinearMap<K: Hashable, V>: AbstractMap<Any, Any> {
     var values = [V]()
     
     fileprivate func findKeyIndex(_ k: K) -> Int? {
-        //return keys.index(of: k)
-        for i in 0..<keys.count {   //do this instead of .index(of:) to know exactly whats happening
-            if keys[i] == k {return i}
-        }
+        //return keys.index(of: k)  //do this instead of .index(of:) to know exactly whats happening (big-O wise):
+        for i in 0..<keys.count { if keys[i] == k {return i} }
         return nil
     }
     

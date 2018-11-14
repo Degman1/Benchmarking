@@ -23,6 +23,7 @@ class Benchmark {
     var OcResults = [Int: Double]()
     
     let NUMBER_OPERATIONS = [1000, 5000, 10000]   //keep number contant through all operations to get comparable results
+    let MAX_ARRAY_SIZE = 1000
     
     //keep track of timer:
     var startTaskms: Double = 0	//I wanted to make this Float80 but vscode didn't highlight it as a valid type
@@ -117,11 +118,11 @@ class Benchmark {
 		let analysisHashGetWorst = compareDataBetweenSets(hashMapGetResults, OnResults);
         
         var output = ""
-        output += "Linear Get: \(analysisLinGet)\n"
         output += "Linear Set: \(analysisLinSet)\n"
-        output += "Binary Get: \(analysisBinGet)\n"
+        output += "Linear Get: \(analysisLinGet)\n"
         output += "Binary Set (Worst Case): \(analysisBinSetWorst)\n"
         output += "Binary Set (Best Case): \(analysisBinSetBest)\n" //if string already exists
+        output += "Binary Get: \(analysisBinGet)\n"
         output += "Hash Set (Best Case): \(analysisHashSetBest)\n"
         output += "Hash Set (Worst Case): \(analysisHashSetWorst)\n"
         output += "Hash Get (Best Case): \(analysisHashGetBest)\n"
@@ -130,14 +131,15 @@ class Benchmark {
         return output
     }
     
-    func statistics() {
-        print("\nBenchmark Test Results:")
-        print("\tLinear Set Test Results - \(linearMapSetResults)")
-        print("\tLinear Get Test Results - \(linearMapGetResults)")
-        print("\tBinary Set Test Results - \(binaryMapSetResults)")
-        print("\tBinary Get Test Results - \(binaryMapGetResults)")
-        print("\tHash Set Test Results - \(hashMapSetResults)")
-        print("\tHash Get Test Results - \(linearMapGetResults)")
+    var statistics: String {
+        var desc = "\nBenchmark Test Results:\n"
+        desc += "\tLinear Set Test Results - \(linearMapSetResults)\n"
+        desc += "\tLinear Get Test Results - \(linearMapGetResults)\n"
+        desc += "\tBinary Set Test Results - \(binaryMapSetResults)\n"
+        desc += "\tBinary Get Test Results - \(binaryMapGetResults)\n"
+        desc += "\tHash Set Test Results - \(hashMapSetResults)\n"
+        desc += "\tHash Get Test Results - \(linearMapGetResults)"
+        return desc
     }
 }
 
@@ -145,7 +147,7 @@ func doBenchmark() {
     let b = Benchmark()
     let _ = b.doTests()
     print()
-    print(b.statistics())
+    print(b.statistics)
     print()
     print(b.dataAnalysis())
     

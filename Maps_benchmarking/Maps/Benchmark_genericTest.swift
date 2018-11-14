@@ -8,16 +8,19 @@
 
 import Foundation
 
-//extension for generic big-O testing:
+//: extension for generic big-O testing:
+
 extension Benchmark {
+    
     func doTest_On(nOperations: Int) -> Bool {          // O(n) -- compare to linear map
-        let repeats = 200   //to get average
-        var total: Double = 0.0
-        for _ in 0..<repeats {  //gets average of the values b/c they seem to be able to vary a lot every now and then
+        let repeats = 200                               //to get average
+        var total: Double = 0.0                         //total time taken for all operations
+        
+        for _ in 0..<repeats {                          //average of the times b/c there is lots of variation
             makeStringList(size: nOperations)
             
             var dummyArray = [String]()
-            var dummyArray2 = [String]()
+            var dummyArray2 = [String]()                //use 2 arrays to better simulate linearMap
             startTimer()
             for n in 0..<nOperations {
                 dummyArray.append(stringList[n])

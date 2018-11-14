@@ -83,8 +83,8 @@
 				63E212DA2192468D00DD0DFF /* MapTest.swift */,
 				632894AD218FEE89005631EE /* BenchmarkingProposal.swift */,
 				63826AD42190C38C0027B37C /* Benchmark.swift */,
-				632AA471219BB0160089F2D7 /* Benchmark_genericTest.swift */,
 				632AA46F219BAFF00089F2D7 /* Benchmark_mapTest.swift */,
+				632AA471219BB0160089F2D7 /* Benchmark_genericTest.swift */,
 			);
 			path = Maps;
 			sourceTree = "<group>";
