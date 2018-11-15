@@ -98,7 +98,6 @@ extension Benchmark {
         
         time = 0.0                                          //reset time
         for _ in 0..<TOTAL_OPERATIONS {
-            print("\nRunning binary tests:")
             index = getRandomInt(range: size)
             key = stringList[index]
             startTimer()
@@ -113,6 +112,7 @@ extension Benchmark {
 
 	func binaryTest() -> Bool {             //bool represents if map works
         for size in array_sizes {
+            print("\nRunning binary tests:")
             let result = doBinaryTest(size: size)
             if result[0] == 0 {return false}
             
@@ -204,6 +204,7 @@ extension Benchmark {
 		var numGetCollisions = 0;
         
         for size in array_sizes {
+            print("Running hash tests:")
             let result = doHashTest(size: size, initialArraySize: size * 3)
             if result[0] == 0 {return false}
 			numSetCollisions = Int(result[2]);

@@ -144,14 +144,14 @@ class Benchmark {
     }
     
     func runTest(testWorked: Bool) {
-        if testWorked { print("linear maps and testing successful!\n") }
-        else { print("linear maps and testing failed\n") }
+        if testWorked { print("maps and testing successful!\n") }
+        else { print("maps and testing failed\n") }
     }
     
     func doTests() {
-        //runTest(testWorked: linearTest())
-        //runTest(testWorked: binaryTest())
-        runTest(testWorked: hashTest())
+        runTest(testWorked: linearTest())
+        runTest(testWorked: binaryTest())
+        //runTest(testWorked: hashTest())
         /*let _ = hashTest(nOperations: nOperations, size: nOperations / 3)
          print()
          let _ = hashTest(nOperations: nOperations, size: nOperations * 3)
