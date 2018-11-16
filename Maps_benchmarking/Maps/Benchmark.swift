@@ -23,8 +23,8 @@ class Benchmark {
     var OcResults = [Int: Double]()
     
     let TOTAL_OPERATIONS = 100   //keep number contant through all operations to get comparable results
-    let array_sizes = [1000, 5000, 10000, 50000, 100000]   //change to see how array size changes the timing
-    var bigA = 100;    //TODO: make bigger for real test for accuracy
+    let ARRAY_SIZES = [1000, 5000, 10000, 50000, 100000]   //change to see how array size changes the timing
+    let ARRAY_SIZES_TEST = [100, 500, 1000, 5000]   //smaller #'s to run it faster when testing
     
     //keep track of timer:
     var startTaskms: Double = 0	//I wanted to make this Float80 but vscode didn't highlight it as a valid type
@@ -82,7 +82,7 @@ class Benchmark {
         print("\(operationName) took \(time) ms")
     }
     
-    func ratioOf(_ a: Double, outOf: Double) -> Double {
+    /*func ratioOf(_ a: Double, outOf: Double) -> Double {
         return (a / outOf) * 100
     }
     
@@ -130,7 +130,7 @@ class Benchmark {
         output += "Hash Get (Worst Case): \(analysisHashGetWorst)\n"
         
         return output
-    }
+    }*/
     
     var statistics: String {
         var desc = "\nBenchmark Test Results:\n"
@@ -149,9 +149,9 @@ class Benchmark {
     }
     
     func doTests() {
-        runTest(testWorked: linearTest())
-        runTest(testWorked: binaryTest())
-        //runTest(testWorked: hashTest())
+        //runTest(testWorked: linearTest())
+        //runTest(testWorked: binaryTest())
+        runTest(testWorked: hashTest())
         /*let _ = hashTest(nOperations: nOperations, size: nOperations / 3)
          print()
          let _ = hashTest(nOperations: nOperations, size: nOperations * 3)

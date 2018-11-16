@@ -17,3 +17,15 @@ class AbstractMap<K, V>: CustomStringConvertible {
     subscript(index: K) -> V? {return nil}
     var description: String {return "Abstract Map"}
 }
+
+protocol Map: CustomStringConvertible {
+    associatedtype typeA
+    associatedtype typeB
+    func getNumberCollitions() -> Int
+    func set(_ k: typeA, v: typeB)
+    func remove(_ k: typeA)
+    func get(_ k: typeA) -> typeB?
+    var count: Int {get}
+    subscript(index: typeA) -> typeB? {get set}
+    var description: String {get}
+}
