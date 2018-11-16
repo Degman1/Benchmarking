@@ -70,7 +70,7 @@ public class MapTest {
         
         
     }
-    func testHashMap()->Bool{
+    func testHashMap()-> Bool {
         var value = ""
         var key = ""
         let map = HashMap<String, String>(initialArraySize: 2000)

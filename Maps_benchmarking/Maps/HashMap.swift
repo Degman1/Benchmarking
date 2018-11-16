@@ -15,17 +15,6 @@ class HashMap<K: Hashable, V>: AbstractMap<Any, Any> {
     let initialArraySize: Int
     var numberCollisions = 0
     
-    /*let freshKeys: [K?]()
-    let freshValues: [V?]( = [])
-    let freshLinearMap = LinearMap<K, V>()
-    func setFreshMap() {
-        
-    }
-    func resetToFreshMap() {
-        
-    }*/
-    
-    
     init(initialArraySize: Int = 100) {
         self.initialArraySize = initialArraySize
         keys = Array(repeating: nil, count: initialArraySize)

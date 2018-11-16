@@ -166,8 +166,6 @@ extension Benchmark {
             if !(value == key) { print("bad binary map... uh oh"); return [0] }   //something went wrong with map
         }
         
-        print(map.linearMap.count)
-        
 		//since the next function needs to know the number of collisions but has no access to the map, it is being
 		//returned as a third element and fourth of the set
 		//returns set, get, percent collisions
@@ -180,7 +178,7 @@ extension Benchmark {
         
         for size in ARRAY_SIZES_TEST {
             print("Better Case:")
-            var result = doHashTest(size: size, initialArraySize: size * 3) //lower % collition
+            var result = doHashTest(size: size, initialArraySize: size * 5) //lower % collition
             if result[0] == 0 {return false}
             
             benchmarkMessageMillis(operationName: "Hash Map Set (size of \(size), \(result[2]) collisions)", time: result[0])
@@ -189,7 +187,7 @@ extension Benchmark {
             hashMapGetResults[size] = result[1]
             
             print("Worse Case:")
-            result = doHashTest(size: size, initialArraySize: size / 3) //higher % collition (collisions / size)
+            result = doHashTest(size: size, initialArraySize: size / 5) //higher % collition (collisions / size)
             if result[0] == 0 {return false}    //map failed
             
             benchmarkMessageMillis(operationName: "Hash Map Set (size of \(size), \(result[2]) collisions)", time: result[0])
