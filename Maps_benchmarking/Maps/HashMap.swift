@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct HashMap<K: Hashable, V> {//: AbstractMap<Any, Any>
+class HashMap<K: Hashable, V>: AbstractMap<Any, Any> {
     var keys: [K?]
     var values: [V?]
     var linearMap = LinearMap<K, V>()
@@ -16,7 +16,7 @@ struct HashMap<K: Hashable, V> {//: AbstractMap<Any, Any>
     var numberCollisions = 0
     
     /*let freshKeys: [K?]()
-    let freshValues: [V?]()
+    let freshValues: [V?]( = [])
     let freshLinearMap = LinearMap<K, V>()
     func setFreshMap() {
         
@@ -34,13 +34,13 @@ struct HashMap<K: Hashable, V> {//: AbstractMap<Any, Any>
     
     func getNumberCollisions() -> Int { return numberCollisions }
     
-    mutating func resetCollisions() { numberCollisions = 0 }
+    func resetCollisions() { numberCollisions = 0 }
     
     var collisionPercent: Double {
         return (Double(getNumberCollisions()) / Double(count)) * 100.0
     }
     
-    mutating func set(_ k: K, v: V) {
+    func set(_ k: K, v: V) {
         let index = getIndex(k)
         if keys[index] == k { //if already present, update value
             values[index] = v
@@ -53,7 +53,7 @@ struct HashMap<K: Hashable, V> {//: AbstractMap<Any, Any>
         }
     }
     
-    mutating func get(_ k: K) -> V? {
+    func get(_ k: K) -> V? {
         let index = getIndex(k)
         if keys[index] == k {   //same procedure as set, but different execution
             return values[index]
@@ -65,17 +65,17 @@ struct HashMap<K: Hashable, V> {//: AbstractMap<Any, Any>
         }
     }
     
-    var count: Int {return keys.filter({$0 != nil}).count + linearMap.count}
+    override var count: Int {return keys.filter({$0 != nil}).count + linearMap.count}
     
     subscript(index: K) -> V? {
-        mutating get {
+        get {
             return get(index)
         } set(newValue) {
             set(index, v: newValue!)
         }
     }
     
-    var description: String {
+    override var description: String {
         var desc = "[\n"
         for i in 0..<keys.count {
             if keys[i] != nil { desc += "\(keys[i]!): \(values[i]!)\n" }
