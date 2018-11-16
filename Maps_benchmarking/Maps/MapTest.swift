@@ -73,7 +73,7 @@ public class MapTest {
     func testHashMap()->Bool{
         var value = ""
         var key = ""
-        var map = HashMap<String, String>(initialArraySize: 2000)
+        let map = HashMap<String, String>(initialArraySize: 2000)
         for i in 0..<NUMBER_PUTS {
             map.set(stringList[i], v: stringList[i]);
         }
