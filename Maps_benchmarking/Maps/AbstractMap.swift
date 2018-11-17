@@ -8,17 +8,26 @@
 
 import Foundation
 
+enum MapType {
+    case abstract, linear, binary, hash
+}
+
 class AbstractMap<K, V>: CustomStringConvertible {
+    init(type: MapType) { self.type = type }
+    var type: MapType
     func getNumberCollitions() -> Int {return 0}
     func set(_ k: K, v: V) {return}
     func remove(_ k: K) {return}
     func get(_ k: K) -> V? {return nil}
+    func setContents(keys: [K], values: [V], lKeys: [K] = [], lValues: [V] = []) {return}
+    func getKeys() -> [K] {return []}
+    func getOverflowKeys() -> [K] {return []}
     var count: Int {return 0}
     subscript(index: K) -> V? {return nil}
     var description: String {return "Abstract Map"}
 }
 
-protocol Map: CustomStringConvertible {
+/*protocol Map: CustomStringConvertible {
     associatedtype typeA
     associatedtype typeB
     func getNumberCollitions() -> Int
@@ -28,4 +37,4 @@ protocol Map: CustomStringConvertible {
     var count: Int {get}
     subscript(index: typeA) -> typeB? {get set}
     var description: String {get}
-}
+}*/

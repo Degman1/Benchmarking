@@ -144,7 +144,7 @@ extension Benchmark {
         let c = map.getNumberCollisions()    //save set collisions -- ! missing the last set, but close enough !
         
         for _ in 0..<TOTAL_OPERATIONS {
-            map.keys = freshArrayHash; map.values = freshArrayHash  //run at start to leave map full at end of looop
+            map.keys = freshArrayHash; map.values = freshArrayHash  //run at start to leave map full at end of loop
             map.linearMap.keys = freshArrayLinear; map.linearMap.values = freshArrayLinear
             startTimer()
             map.set(addValue, v: addValue)
@@ -163,7 +163,7 @@ extension Benchmark {
             value = map.get(key)!
             endTimer()
             time += elapsedTimems()
-            if !(value == key) { print("bad binary map... uh oh"); return [0] }   //something went wrong with map
+            if !(value == key) { print("bad hash map... uh oh"); return [0] }   //something went wrong with map
         }
         
 		//since the next function needs to know the number of collisions but has no access to the map, it is being
@@ -176,7 +176,7 @@ extension Benchmark {
 	func hashTest() -> Bool {             //bool represents if map works
         print("Running hash tests:")
         
-        for size in ARRAY_SIZES_TEST {
+        for size in ARRAY_SIZES {
             print("Better Case:")
             var result = doHashTest(size: size, initialArraySize: size * 5) //lower % collition
             if result[0] == 0 {return false}

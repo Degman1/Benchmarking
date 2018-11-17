@@ -8,11 +8,22 @@
 
 import Foundation
 
-class BinaryMap<K: Comparable, V>: AbstractMap<Any, Any> {
+class BinaryMap<K: Comparable, V>: AbstractMap<K, V> {
     var keys = [K]()
     var values = [V]()
-        
-    func set(_ k: K, v: V) {
+    
+    init() { super.init(type: .binary) }
+    
+    func setContents(keys: [K], values: [V]) {
+        self.keys = keys
+        self.values = values
+    }
+    
+    override func getKeys() -> [K] {
+        return keys
+    }
+    
+    override func set(_ k: K, v: V) {
         if let index = binarySearch(elements: keys, target: k) { //binary search
             values[index] = v   //found key and reset value
         } else {
@@ -20,7 +31,7 @@ class BinaryMap<K: Comparable, V>: AbstractMap<Any, Any> {
         }
     }
     
-    func get(_ k: K) -> V? {
+    override func get(_ k: K) -> V? {
         if let index = binarySearch(elements: keys, target: k) {
             return values[index]
         }
@@ -29,7 +40,7 @@ class BinaryMap<K: Comparable, V>: AbstractMap<Any, Any> {
     
     override var count: Int {return keys.count}
         
-    subscript(index: K) -> V? {
+    override subscript(index: K) -> V? {
         get {
             return get(index)
         } set(newValue) {

@@ -76,9 +76,9 @@
 				6381972721610C9C004CEC6A /* LinearMap.swift */,
 				63DDF045216D7021007A0A5A /* BinaryMap.swift */,
 				63DDF047216D702A007A0A5A /* HashMap.swift */,
-				63E212DA2192468D00DD0DFF /* MapTest.swift */,
 				63826AD42190C38C0027B37C /* Benchmark.swift */,
 				632AA46F219BAFF00089F2D7 /* Benchmark_mapTest.swift */,
+				63E212DA2192468D00DD0DFF /* MapTest.swift */,
 			);
 			path = Maps;
 			sourceTree = "<group>";

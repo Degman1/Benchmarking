@@ -10,4 +10,4 @@ import Foundation
 
 print("Hello, World! Let's Do Some Benchmarking!\nThis might take a while...\n")
 
-doBenchmark()
+doBenchmark_poly()

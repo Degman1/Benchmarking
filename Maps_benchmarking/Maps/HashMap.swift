@@ -8,7 +8,7 @@
 
 import Foundation
 
-class HashMap<K: Hashable, V>: AbstractMap<Any, Any> {
+class HashMap<K: Hashable, V>: AbstractMap<K, V> {
     var keys: [K?]
     var values: [V?]
     var linearMap = LinearMap<K, V>()
@@ -19,7 +19,20 @@ class HashMap<K: Hashable, V>: AbstractMap<Any, Any> {
         self.initialArraySize = initialArraySize
         keys = Array(repeating: nil, count: initialArraySize)
         values = Array(repeating: nil, count: initialArraySize)
+        super.init(type: .hash)
     }
+    
+    func setContents(keys: [K?], values: [V?], lKeys: [K], lValues: [V]) {
+        self.keys = keys
+        self.values = values
+        linearMap.setContents(keys: lKeys, values: lValues)
+    }
+    
+    func getKeys() -> [K?] {
+        return keys
+    }
+    
+    
     
     func getNumberCollisions() -> Int { return numberCollisions }
     
@@ -29,7 +42,7 @@ class HashMap<K: Hashable, V>: AbstractMap<Any, Any> {
         return (Double(getNumberCollisions()) / Double(count)) * 100.0
     }
     
-    func set(_ k: K, v: V) {
+    override func set(_ k: K, v: V) {
         let index = getIndex(k)
         if keys[index] == k { //if already present, update value
             values[index] = v
@@ -42,7 +55,7 @@ class HashMap<K: Hashable, V>: AbstractMap<Any, Any> {
         }
     }
     
-    func get(_ k: K) -> V? {
+    override func get(_ k: K) -> V? {
         let index = getIndex(k)
         if keys[index] == k {   //same procedure as set, but different execution
             return values[index]
@@ -56,7 +69,7 @@ class HashMap<K: Hashable, V>: AbstractMap<Any, Any> {
     
     override var count: Int {return keys.filter({$0 != nil}).count + linearMap.count}
     
-    subscript(index: K) -> V? {
+    override subscript(index: K) -> V? {
         get {
             return get(index)
         } set(newValue) {
