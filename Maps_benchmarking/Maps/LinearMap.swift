@@ -16,14 +16,23 @@ class LinearMap<K: Hashable, V>: AbstractMap<K, V> {
         super.init(type: .linear)
     }
     
-    func setContents(keys: [K], values: [V]) {
+    override func setMany(keys: [K?], values: [V?]) {
+        self.keys = keys.map({$0!})
+        self.values = values.map({$0!})
+    }
+    
+    override func allKeys() -> [K?]? {
+        return keys.map({Optional($0)})
+    }
+    
+    /*override func setContents(keys: [K], values: [V], overflowKeys: [K], overflowValues: [V]) {
         self.keys = keys
         self.values = values
     }
     
     override func getKeys() -> [K] {
         return keys
-    }
+    }*/
     
     fileprivate func findKeyIndex(_ k: K) -> Int? {
         //return keys.index(of: k)  //do this instead of .index(of:) to know exactly whats happening (big-O wise):
@@ -32,7 +41,8 @@ class LinearMap<K: Hashable, V>: AbstractMap<K, V> {
     }
     
     override func set(_ k: K, v: V) {
-        if let i = findKeyIndex(k) { values[i] = v; return }
+        if let i = findKeyIndex(k) { bestCaseCount += 1; values[i] = v; return }
+        worstCaseCount += 1
         keys.append(k)
         values.append(v)
     }

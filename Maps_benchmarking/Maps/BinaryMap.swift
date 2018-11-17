@@ -14,20 +14,31 @@ class BinaryMap<K: Comparable, V>: AbstractMap<K, V> {
     
     init() { super.init(type: .binary) }
     
-    func setContents(keys: [K], values: [V]) {
+    override func setMany(keys: [K?], values: [V?]) {
+        self.keys = keys.map({$0!})
+        self.values = values.map({$0!})
+    }
+    
+    override func allKeys() -> [K?]? {
+        return keys.map({Optional($0)})
+    }
+    
+    /*override func setContents(keys: [K], values: [V], overflowKeys: [K], overflowValues: [V]) {
         self.keys = keys
         self.values = values
     }
     
     override func getKeys() -> [K] {
         return keys
-    }
+    }*/
     
     override func set(_ k: K, v: V) {
         if let index = binarySearch(elements: keys, target: k) { //binary search
             values[index] = v   //found key and reset value
+            bestCaseCount += 1
         } else {
             linearInsertion(k, v)   //linear search to input new elements ordered
+            worstCaseCount += 1
         }
     }
     

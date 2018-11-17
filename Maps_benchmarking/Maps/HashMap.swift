@@ -22,19 +22,30 @@ class HashMap<K: Hashable, V>: AbstractMap<K, V> {
         super.init(type: .hash)
     }
     
-    func setContents(keys: [K?], values: [V?], lKeys: [K], lValues: [V]) {
+    override func setMany(keys: [K?], values: [V?]) {
         self.keys = keys
         self.values = values
-        linearMap.setContents(keys: lKeys, values: lValues)
+    }
+    
+    override func allKeys() -> [K?]? {
+        return keys + linearMap.allKeys()!
+    }
+    
+    /*func setContentsOP(keys: [K?], values: [V?], overflowKeys: [K], overflowValues: [V]) {
+        self.keys = keys
+        self.values = values
+        linearMap.setContents(keys: overflowKeys, values: overflowValues, overflowKeys: [], overflowValues: [])
     }
     
     func getKeys() -> [K?] {
         return keys
     }
     
+    override func getOverflowKeys() -> [K] {
+        return linearMap.getKeys()
+    }*/
     
-    
-    func getNumberCollisions() -> Int { return numberCollisions }
+    override func getNumberCollisions() -> Int { return numberCollisions }
     
     func resetCollisions() { numberCollisions = 0 }
     
@@ -46,12 +57,16 @@ class HashMap<K: Hashable, V>: AbstractMap<K, V> {
         let index = getIndex(k)
         if keys[index] == k { //if already present, update value
             values[index] = v
+            bestCaseCount += 1
         } else if keys[index] == nil { //if not present + space empty, add entry
             keys[index] = k
             values[index] = v
+            bestCaseCount += 1
         } else { //if space occupied, place entry in linear map
             numberCollisions += 1
+            worstCaseCount += 1
             linearMap[k] = v
+            
         }
     }
     

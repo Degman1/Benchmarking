@@ -13,15 +13,22 @@ enum MapType {
 }
 
 class AbstractMap<K, V>: CustomStringConvertible {
+    var bestCaseCount = 0
+    var worstCaseCount = 0
+    
     init(type: MapType) { self.type = type }
     var type: MapType
-    func getNumberCollitions() -> Int {return 0}
+    func getNumberCollisions() -> Int {return 0}
     func set(_ k: K, v: V) {return}
     func remove(_ k: K) {return}
     func get(_ k: K) -> V? {return nil}
-    func setContents(keys: [K], values: [V], lKeys: [K] = [], lValues: [V] = []) {return}
+    
+    func setMany(keys: [K?], values: [V?]) {return}
+    func allKeys() -> [K?]? {return nil}
+    
+    /*func setContents(keys: [K], values: [V], overflowKeys: [K], overflowValues: [V]) {return}
     func getKeys() -> [K] {return []}
-    func getOverflowKeys() -> [K] {return []}
+    func getOverflowKeys() -> [K] {return []}*/
     var count: Int {return 0}
     subscript(index: K) -> V? {return nil}
     var description: String {return "Abstract Map"}
