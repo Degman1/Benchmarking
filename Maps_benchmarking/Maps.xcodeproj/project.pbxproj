@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		632AA470219BAFF00089F2D7 /* Benchmark_mapTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632AA46F219BAFF00089F2D7 /* Benchmark_mapTest.swift */; };
+		63312C79219FBD7A008F697E /* Benchmark_polymorphism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63312C78219FBD7A008F697E /* Benchmark_polymorphism.swift */; };
 		6381972121610C8D004CEC6A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6381972021610C8D004CEC6A /* main.swift */; };
 		6381972821610C9C004CEC6A /* LinearMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6381972721610C9C004CEC6A /* LinearMap.swift */; };
 		63826AD52190C38C0027B37C /* Benchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63826AD42190C38C0027B37C /* Benchmark.swift */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		632AA46F219BAFF00089F2D7 /* Benchmark_mapTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Benchmark_mapTest.swift; sourceTree = "<group>"; };
+		63312C78219FBD7A008F697E /* Benchmark_polymorphism.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Benchmark_polymorphism.swift; sourceTree = "<group>"; };
 		6381971D21610C8D004CEC6A /* Maps */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Maps; sourceTree = BUILT_PRODUCTS_DIR; };
 		6381972021610C8D004CEC6A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		6381972721610C9C004CEC6A /* LinearMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearMap.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				63DDF047216D702A007A0A5A /* HashMap.swift */,
 				63826AD42190C38C0027B37C /* Benchmark.swift */,
 				632AA46F219BAFF00089F2D7 /* Benchmark_mapTest.swift */,
+				63312C78219FBD7A008F697E /* Benchmark_polymorphism.swift */,
 				63E212DA2192468D00DD0DFF /* MapTest.swift */,
 			);
 			path = Maps;
@@ -140,6 +143,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63312C79219FBD7A008F697E /* Benchmark_polymorphism.swift in Sources */,
 				63DDF046216D7021007A0A5A /* BinaryMap.swift in Sources */,
 				63826AD52190C38C0027B37C /* Benchmark.swift in Sources */,
 				639F7BAB2188DF960028D4B1 /* AbstractMap.swift in Sources */,
