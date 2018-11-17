@@ -171,7 +171,7 @@ class Benchmark_polymorphism {
 }
 
 enum SetOperationType {
-    case SetNewValue, UpdateValue, BetterHash, WorseHash
+    case SetNewValue, UpdateValue
 }
 
 func doBenchmark_poly() {

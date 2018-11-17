@@ -23,22 +23,11 @@ class BinaryMap<K: Comparable, V>: AbstractMap<K, V> {
         return keys.map({Optional($0)})
     }
     
-    /*override func setContents(keys: [K], values: [V], overflowKeys: [K], overflowValues: [V]) {
-        self.keys = keys
-        self.values = values
-    }
-    
-    override func getKeys() -> [K] {
-        return keys
-    }*/
-    
     override func set(_ k: K, v: V) {
         if let index = binarySearch(elements: keys, target: k) { //binary search
             values[index] = v   //found key and reset value
-            bestCaseCount += 1
         } else {
             linearInsertion(k, v)   //linear search to input new elements ordered
-            worstCaseCount += 1
         }
     }
     
