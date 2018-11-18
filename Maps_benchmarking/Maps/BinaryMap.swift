@@ -15,8 +15,9 @@ class BinaryMap<K: Comparable, V>: AbstractMap<K, V> {
     init() { super.init(type: .binary) }
     
     override func setMany(keys: [K?], values: [V?]) {
-        self.keys = keys.map({$0!})
-        self.values = values.map({$0!})
+        for i in 0..<keys.count {
+            set(keys[i]!, v: values[i]!)
+        }
     }
     
     override func allKeys() -> [K?]? {

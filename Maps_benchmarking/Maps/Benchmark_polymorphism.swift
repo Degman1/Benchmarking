@@ -151,15 +151,15 @@ class Benchmark_polymorphism {
     }
     
     func runAllTests() {
-        let isTestRun = false
-        runCheckTest(testWorked: runTest(type: .linear, operation: .SetNewValue, testMode: isTestRun))
+        let isTestRun = true
+        /*runCheckTest(testWorked: runTest(type: .linear, operation: .SetNewValue, testMode: isTestRun))
         print("\n\n")
         runCheckTest(testWorked: runTest(type: .linear, operation: .UpdateValue, testMode: isTestRun))
         print("\n\n")
         runCheckTest(testWorked: runTest(type: .binary, operation: .SetNewValue, testMode: isTestRun))
         print("\n\n")
         runCheckTest(testWorked: runTest(type: .binary, operation: .UpdateValue, testMode: isTestRun))
-        print("\n\n")
+        print("\n\n")*/
         runCheckTest(testWorked: runTest(type: .hash, operation: .SetNewValue, testMode: isTestRun, betterCase: true))
         print("\n\n")
         runCheckTest(testWorked: runTest(type: .hash, operation: .UpdateValue, testMode: isTestRun, betterCase: true))

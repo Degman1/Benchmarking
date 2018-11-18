@@ -17,8 +17,9 @@ class LinearMap<K: Hashable, V>: AbstractMap<K, V> {
     }
     
     override func setMany(keys: [K?], values: [V?]) {
-        self.keys = keys.map({$0!})
-        self.values = values.map({$0!})
+        for i in 0..<keys.count {
+            set(keys[i]!, v: values[i]!)
+        }
     }
     
     override func allKeys() -> [K?]? {

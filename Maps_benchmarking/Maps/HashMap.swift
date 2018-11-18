@@ -23,12 +23,13 @@ class HashMap<K: Hashable, V>: AbstractMap<K, V> {
     }
     
     override func setMany(keys: [K?], values: [V?]) {
-        self.keys = keys
-        self.values = values
+        for i in 0..<keys.count {
+            set(keys[i]!, v: values[i]!)
+        }
     }
     
     override func allKeys() -> [K?]? {
-        return keys + linearMap.allKeys()!
+        return keys.filter({$0 != nil}) + linearMap.allKeys()!
     }
     
     override func getNumberCollisions() -> Int { return numberCollisions }
