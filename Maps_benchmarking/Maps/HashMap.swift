@@ -22,14 +22,15 @@ class HashMap<K: Hashable, V>: AbstractMap<K, V> {
         super.init(type: .hash)
     }
     
-    override func setMany(keys: [K?], values: [V?]) {
-        for i in 0..<keys.count {
-            set(keys[i]!, v: values[i]!)
-        }
+    override func setMany(keys: [K], values: [V], overflowKeys: [K], overflowValues: [V]) {
+        self.keys = keys
+        self.values = values
+        self.linearMap.setMany(keys: overflowKeys, values: overflowValues, overflowKeys: [], overflowValues: [])
     }
     
-    override func allKeys() -> [K?]? {
-        return keys.filter({$0 != nil}) + linearMap.allKeys()!
+    override func allKeys() -> [[K]] {
+        let k = keys.filter({$0 != nil}).map({$0!})
+        return [k as! Array<K>, linearMap.allKeys()]
     }
     
     override func getNumberCollisions() -> Int { return numberCollisions }

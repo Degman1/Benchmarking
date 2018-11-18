@@ -19,8 +19,8 @@ class AbstractMap<K, V>: CustomStringConvertible {
     func set(_ k: K, v: V) {return}
     func remove(_ k: K) {return}
     func get(_ k: K) -> V? {return nil}
-    func setMany(keys: [K?], values: [V?]) {return}
-    func allKeys() -> [K?]? {return nil}
+    func setMany(keys: [K], values: [V], overflowKeys: [K], overflowValues: [V]) {return}
+    func allKeys() -> [[K]] {return [[], []]}   //[keys, overflowKeys]
     var count: Int {return 0}
     subscript(index: K) -> V? {return nil}
     var description: String {return "Abstract Map"}

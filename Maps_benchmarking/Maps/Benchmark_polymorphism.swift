@@ -151,7 +151,7 @@ class Benchmark_polymorphism {
     }
     
     func runAllTests() {
-        let isTestRun = true
+        let isTestRun = false
         /*runCheckTest(testWorked: runTest(type: .linear, operation: .SetNewValue, testMode: isTestRun))
         print("\n\n")
         runCheckTest(testWorked: runTest(type: .linear, operation: .UpdateValue, testMode: isTestRun))

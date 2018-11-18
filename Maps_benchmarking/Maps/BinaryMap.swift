@@ -14,14 +14,13 @@ class BinaryMap<K: Comparable, V>: AbstractMap<K, V> {
     
     init() { super.init(type: .binary) }
     
-    override func setMany(keys: [K?], values: [V?]) {
-        for i in 0..<keys.count {
-            set(keys[i]!, v: values[i]!)
-        }
+    override func setMany(keys: [K], values: [V], overflowKeys: [K], overflowValues: [V]) {
+        self.keys = keys    //don't use insert b/c takes way way longer with high n values + don't need to
+        self.values = values
     }
     
-    override func allKeys() -> [K?]? {
-        return keys.map({Optional($0)})
+    override func allKeys() -> [[K]] {
+        return [keys, []]   //no overflow
     }
     
     override func set(_ k: K, v: V) {

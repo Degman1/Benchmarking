@@ -16,14 +16,13 @@ class LinearMap<K: Hashable, V>: AbstractMap<K, V> {
         super.init(type: .linear)
     }
     
-    override func setMany(keys: [K?], values: [V?]) {
-        for i in 0..<keys.count {
-            set(keys[i]!, v: values[i]!)
-        }
+    override func setMany(keys: [K], values: [V], overflowKeys: [K], overflowValues: [V]) {
+        self.keys = keys    //don't use insert b/c takes way way longer with high n values + don't need to
+        self.values = values
     }
     
-    override func allKeys() -> [K?]? {
-        return keys.map({Optional($0)})
+    override func allKeys() -> [[K]] {
+        return [keys, []]
     }
     
     fileprivate func findKeyIndex(_ k: K) -> Int? {
